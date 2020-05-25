@@ -1,0 +1,28 @@
+﻿<Window x:Class="CoffeeStation.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CoffeeStation"
+        mc:Ignorable="d"
+        Title="Login"
+        Width="300"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterScreen">
+    <StackPanel Margin="5">
+        <StackPanel Margin="5">
+            <StackPanel Margin="0,0,0,5">
+                <Label Content="Username"/>
+                <TextBox/>
+                <Label Content="Password"/>
+                <TextBox/>
+            </StackPanel>
+            <StackPanel Margin="0,0,0,5">
+                <Button Content="Log In"/>
+            </StackPanel>
+            <StackPanel>
+                <Button Content="I do not have an account" Click="ShowSignupWindow"/>
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</Window>
