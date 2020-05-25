@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CoffeeStation.Database;
+using System.Data.Entity;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace CoffeeStation
 {
@@ -22,6 +12,9 @@ namespace CoffeeStation
         public LoginWindow()
         {
             InitializeComponent();
+
+            ApplicationContext context = new ApplicationContext();
+            context.Users.Load();
         }
 
         private void ShowSignupWindow(object sender, RoutedEventArgs e)
