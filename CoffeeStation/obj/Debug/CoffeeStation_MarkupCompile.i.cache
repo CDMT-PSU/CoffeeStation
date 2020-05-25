@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\guarandoo\Source\Repos\CoffeeStation\CoffeeStation\obj\Debug\
+C:\Users\guarandoo\source\repos\CoffeeStation\CoffeeStation\obj\Debug\
 CoffeeStation
 none
 false
 DEBUG;TRACE
-C:\Users\guarandoo\Source\Repos\CoffeeStation\CoffeeStation\App.xaml
-11151548125
+C:\Users\guarandoo\source\repos\CoffeeStation\CoffeeStation\App.xaml
+31440172435
 
-6-1877842010
+8-1431555649
 13-1505183044
-MainWindow.xaml;
+LoginWindow.xaml;MainWindow.xaml;SignupWindow.xaml;
 
 True
 
