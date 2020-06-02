@@ -11,9 +11,9 @@
         WindowStartupLocation="CenterScreen">
     <StackPanel Margin="5">
         <StackPanel Margin="0,0,0,5">
-            <Label Content="Username"/>
+            <Label Content="Username (?)" ToolTip="Username length must be 4 to 15 characters."/>
             <TextBox x:Name="usernameTextBox" MaxLength="15"/>
-            <Label Content="Password"/>
+            <Label Content="Password (?)" ToolTip="Password length must be 4 to 15 characters."/>
             <PasswordBox x:Name="passwordBox" MaxLength="15"/>
             <Label Content="Repeat password"/>
             <PasswordBox x:Name="passwordConfirmationBox" MaxLength="15"/>
