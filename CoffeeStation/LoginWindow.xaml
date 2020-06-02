@@ -13,12 +13,12 @@
         <StackPanel Margin="5">
             <StackPanel Margin="0,0,0,5">
                 <Label Content="Username"/>
-                <TextBox/>
+                <TextBox x:Name="usernameTextBox" MaxLength="15"/>
                 <Label Content="Password"/>
-                <TextBox/>
+                <PasswordBox x:Name="passwordBox" MaxLength="15"/>
             </StackPanel>
             <StackPanel Margin="0,0,0,5">
-                <Button Content="Log In"/>
+                <Button Content="Log In" Click="LogIn"/>
             </StackPanel>
             <StackPanel>
                 <Button Content="I do not have an account" Click="ShowSignupWindow"/>
