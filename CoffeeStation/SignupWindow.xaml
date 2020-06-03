@@ -11,15 +11,15 @@
         WindowStartupLocation="CenterScreen">
     <StackPanel Margin="5">
         <StackPanel Margin="0,0,0,5">
-            <Label Content="Username"/>
-            <TextBox/>
-            <Label Content="Password"/>
-            <TextBox/>
+            <Label Content="Username (?)" ToolTip="Username length must be 4 to 15 characters."/>
+            <TextBox x:Name="usernameTextBox" MaxLength="15"/>
+            <Label Content="Password (?)" ToolTip="Password length must be 4 to 15 characters."/>
+            <PasswordBox x:Name="passwordBox" MaxLength="15"/>
             <Label Content="Repeat password"/>
-            <TextBox/>
+            <PasswordBox x:Name="passwordConfirmationBox" MaxLength="15"/>
         </StackPanel>
         <StackPanel Margin="0,0,0,5">
-            <Button Content="Sign Up"/>
+            <Button Content="Sign Up" Click="SignUp"/>
         </StackPanel>
         <StackPanel>
             <Button Content="I already have an account" Click="ShowLoginWindow"/>

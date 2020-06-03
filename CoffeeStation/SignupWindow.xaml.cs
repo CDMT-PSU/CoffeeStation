@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CoffeeStation.Database;
+using System;
+using System.Data.Entity;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace CoffeeStation
 {
@@ -21,7 +12,37 @@ namespace CoffeeStation
     {
         public SignupWindow()
         {
+            DataContext = this;
             InitializeComponent();
+        }
+
+        private void SignUp(object sender, RoutedEventArgs e)
+        {
+            var username = usernameTextBox.Text;
+            var password = passwordBox.Password;
+            var passwordConfirmation = passwordConfirmationBox.Password;
+            if (username.Length < 4)
+            {
+                MessageBox.Show("Username length must be 4 to 15 characters");
+                return;
+            }
+            if (password.Length < 4)
+            {
+                MessageBox.Show("Password length must be 4 to 15 characters");
+                return;
+            }
+            if (password != passwordConfirmation)
+            {
+                MessageBox.Show("Password mismatch");
+                return;
+            }
+            var user = new User();
+            user.Username = username;
+            user.HashPassword(password);
+            var ctx = new ApplicationContext();
+            ctx.Users.Add(user);
+            ctx.SaveChanges();
+            MessageBox.Show("Registration done");
         }
 
         private void ShowLoginWindow(object sender, RoutedEventArgs e)
