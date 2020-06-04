@@ -72,13 +72,13 @@ public final class MainWindow {
 
         /* tabbedPane */
         tabbedPane.addChangeListener(this::tabbedPaneTabChanged);
-        tabbedPane.addTab("Заказы", new OrderTab(user));
-        tabbedPane.addTab("Позиции заказов", new OrderItemTab(user));
-        tabbedPane.addTab("Позиции меню", new MenuItemTab(user));
-        tabbedPane.addTab("Ингредиенты", new IngredientTab(user));
-        tabbedPane.addTab("Позиции рецептов", new RecipeItemTab(user));
+        tabbedPane.addTab("Заказы", Main.ORDER_TAB_ICON, new OrderTab(user));
+        tabbedPane.addTab("Позиции заказов", Main.ORDER_ITEM_TAB_ICON, new OrderItemTab(user));
+        tabbedPane.addTab("Позиции меню", Main.MENU_ITEM_TAB_ICON, new MenuItemTab(user));
+        tabbedPane.addTab("Ингредиенты", Main.INGREDIENTS_TAB_ICON, new IngredientTab(user));
+        tabbedPane.addTab("Позиции рецептов", Main.RECIPE_ITEM_TAB_ICON, new RecipeItemTab(user));
         if (user.getRole() == User.Role.ADMINISTRATOR) {
-            tabbedPane.addTab("Пользователи", new UserTab());
+            tabbedPane.addTab("Пользователи", Main.USER_TAB_ICON, new UserTab());
         }
 
         /* contentPane */

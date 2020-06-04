@@ -31,6 +31,7 @@ public abstract class Tab<T extends DataObject> extends JPanel {
         items = new ArrayList<>();
         tableModel = new TabTableModel<>(columns, classes, userCanEdit, items, dao);
         table = new JTable(tableModel);
+        table.setRowHeight(25);
         setLayout(new BorderLayout());
         add(new JScrollPane(table));
         refresh();
