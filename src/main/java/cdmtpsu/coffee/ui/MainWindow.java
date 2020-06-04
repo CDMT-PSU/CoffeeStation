@@ -12,6 +12,7 @@ import cdmtpsu.coffee.ui.tabs.UserTab;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
@@ -28,6 +29,8 @@ public final class MainWindow {
     private final JTabbedPane tabbedPane;
     private final JPanel contentPane;
     private final JFrame frame;
+
+    private final User user;
 
     public MainWindow(User user) {
         /* init components */
@@ -57,7 +60,7 @@ public final class MainWindow {
         tabbedPane.addTab("Позиции заказов", new OrderItemTab(user));
         tabbedPane.addTab("Позиции меню", new MenuItemTab(user));
         tabbedPane.addTab("Ингредиенты", new IngredientTab(user));
-        tabbedPane.addTab("Рецепты", new RecipeItemTab(user));
+        tabbedPane.addTab("Позиции рецептов", new RecipeItemTab(user));
         if (user.getRole() == User.Role.ADMINISTRATOR) {
             tabbedPane.addTab("Пользователи", new UserTab());
         }
@@ -75,6 +78,8 @@ public final class MainWindow {
         frame.setContentPane(contentPane);
         frame.pack();
         frame.setLocationRelativeTo(null);
+
+        this.user = user;
     }
 
     private void tabbedPaneTabChanged(ChangeEvent event) {
@@ -89,7 +94,18 @@ public final class MainWindow {
     }
 
     private void removeButtonClicked(ActionEvent event) {
-        ((Tab<?>) tabbedPane.getSelectedComponent()).remove(frame);
+        Tab<?> tab = (Tab<?>) tabbedPane.getSelectedComponent();
+
+        /* cringe */
+        if (tab.getSelectedItems().contains(user)) {
+            JOptionPane.showMessageDialog(frame,
+                    "Нельзя удалить самого себя",
+                    "Ошибка",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        tab.remove(frame);
     }
 
     public void create() {

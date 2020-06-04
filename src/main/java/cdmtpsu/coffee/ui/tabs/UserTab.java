@@ -27,10 +27,12 @@ public final class UserTab extends Tab<User> {
         super(
                 new String[]{
                         "Имя пользователя",
+                        "ФИО",
                         "Хеш",
                         "Роль"
                 },
                 new Class[]{
+                        String.class,
                         String.class,
                         String.class,
                         User.Role.class
@@ -38,6 +40,7 @@ public final class UserTab extends Tab<User> {
                 Database.getInstance().getUsers(),
                 true, true, true);
         setCellEditor("Имя пользователя", new TextFieldCellEditor(Database.USERNAME_PATTERN));
+        setCellEditor("ФИО", new TextFieldCellEditor("[\\s\\S]+"));
         setCellEditor("Хеш", new TextFieldCellEditor(Database.PASSWORD_PATTERN, false));
         setCellEditor("Роль", new EnumCellEditor<>(User.Role.class));
     }
@@ -53,6 +56,8 @@ public final class UserTab extends Tab<User> {
         /* ui components */
         private final JLabel usernameLabel;
         private final JTextField usernameTextField;
+        private final JLabel nameLabel;
+        private final JTextField nameTextField;
         private final JLabel passwordLabel;
         private final JPasswordField passwordField;
         private final JLabel roleLabel;
@@ -68,6 +73,8 @@ public final class UserTab extends Tab<User> {
             /* init components */
             usernameLabel = new JLabel();
             usernameTextField = new JTextField();
+            nameLabel = new JLabel();
+            nameTextField = new JTextField();
             passwordLabel = new JLabel();
             passwordField = new JPasswordField();
             roleLabel = new JLabel();
@@ -83,6 +90,12 @@ public final class UserTab extends Tab<User> {
             /* usernameTextField */
             usernameTextField.setPreferredSize(new Dimension(150, 20));
             SwingUtils.onValueChanged(usernameTextField, this::fieldValueChanged);
+
+            /* nameLabel */
+            nameLabel.setText("ФИО");
+
+            /* nameTextField */
+            nameTextField.setPreferredSize(new Dimension(150, 20));
 
             /* passwordLabel */
             passwordLabel.setText("Пароль");
@@ -111,10 +124,13 @@ public final class UserTab extends Tab<User> {
             buttonPanel.add(cancelButton);
 
             /* contentPane */
-            contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            contentPane.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
             contentPane.setLayout(new CenterLayout());
             contentPane.add(usernameLabel);
             contentPane.add(usernameTextField);
+            contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
+            contentPane.add(nameLabel);
+            contentPane.add(nameTextField);
             contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
             contentPane.add(passwordLabel);
             contentPane.add(passwordField);
@@ -143,6 +159,7 @@ public final class UserTab extends Tab<User> {
 
         private void okButtonClicked(ActionEvent event) {
             String username = usernameTextField.getText();
+            String name = nameTextField.getText();
             String hash = Database.hashPassword(passwordField.getText());
             User.Role role = (User.Role) roleComboBox.getSelectedItem();
 
@@ -156,6 +173,7 @@ public final class UserTab extends Tab<User> {
 
             result = new User();
             result.setUsername(username);
+            result.setName(name);
             result.setHash(hash);
             result.setRole(role);
 

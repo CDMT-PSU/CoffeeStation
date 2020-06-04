@@ -92,7 +92,7 @@ public final class IngredientTab extends Tab<Ingredient> {
             buttonPanel.add(cancelButton);
 
             /* contentPane */
-            contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            contentPane.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
             contentPane.setLayout(new CenterLayout());
             contentPane.add(nameLabel);
             contentPane.add(nameTextField);

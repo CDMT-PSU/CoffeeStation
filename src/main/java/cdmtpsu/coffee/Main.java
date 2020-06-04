@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
 public class Main {
     public static final ArrayList<Image> ICONS;
 
@@ -35,15 +36,13 @@ public class Main {
         }
         Database.getInstance(); // init
         //new StartupWindow().create();
-
         try {
             User user = Database.getInstance().getUsers().queryBuilder()
-                    .where().eq(User.USERNAME_FIELD_NAME, "user")
+                    .where().eq(User.USERNAME_FIELD_NAME, "admin")
                     .queryForFirst();
             new MainWindow(user).create();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 }

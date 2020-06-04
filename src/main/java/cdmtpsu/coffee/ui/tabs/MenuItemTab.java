@@ -96,7 +96,7 @@ public final class MenuItemTab extends Tab<MenuItem> {
             buttonPanel.add(cancelButton);
 
             /* contentPane */
-            contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            contentPane.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
             contentPane.setLayout(new CenterLayout());
             contentPane.add(nameLabel);
             contentPane.add(nameTextField);

@@ -13,6 +13,7 @@ import java.awt.BorderLayout;
 import java.awt.Window;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Tab<T extends DataObject> extends JPanel {
     private final Dao<T, Integer> dao;
@@ -100,6 +101,15 @@ public abstract class Tab<T extends DataObject> extends JPanel {
                 e.printStackTrace();
             }
         }
+    }
+
+    public List<Object> getSelectedItems() {
+        ArrayList<Object> list = new ArrayList<>();
+        int[] rows = table.getSelectedRows();
+        for (int row : rows) {
+            list.add(items.get(row));
+        }
+        return list;
     }
 
     private static final class TabTableModel<T extends DataObject> extends AbstractTableModel {

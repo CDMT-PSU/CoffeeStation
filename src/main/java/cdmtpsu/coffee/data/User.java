@@ -11,17 +11,21 @@ public final class User implements DataObject {
     /* names */
     public static final String TABLE_NAME = "user";
     public static final String USERNAME_FIELD_NAME = "username";
+    public static final String NAME_FIELD_NAME = "name";
     public static final String HASH_FIELD_NAME = "hash";
     public static final String ROLE_FIELD_NAME = "role";
     /* indices */
     public static final int USERNAME_FIELD_INDEX = 0;
-    public static final int HASH_FIELD_INDEX = 1;
-    public static final int ROLE_FIELD_INDEX = 2;
+    public static final int NAME_FIELD_INDEX = 1;
+    public static final int HASH_FIELD_INDEX = 2;
+    public static final int ROLE_FIELD_INDEX = 3;
 
     @DatabaseField(generatedId = true)
     private int id;
     @DatabaseField(columnName = USERNAME_FIELD_NAME)
     private String username;
+    @DatabaseField(columnName = NAME_FIELD_NAME)
+    private String name;
     @DatabaseField(columnName = HASH_FIELD_NAME)
     private String hash;
     @DatabaseField(columnName = ROLE_FIELD_NAME, dataType = DataType.ENUM_INTEGER)
@@ -30,6 +34,7 @@ public final class User implements DataObject {
     public User() {
     }
 
+    /* crutch */
     public int getId() {
         return id;
     }
@@ -40,6 +45,14 @@ public final class User implements DataObject {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getHash() {
@@ -63,6 +76,8 @@ public final class User implements DataObject {
         switch (fieldIndex) {
             case USERNAME_FIELD_INDEX:
                 return username;
+            case NAME_FIELD_INDEX:
+                return name;
             case HASH_FIELD_INDEX:
                 return hash;
             case ROLE_FIELD_INDEX:
@@ -78,6 +93,8 @@ public final class User implements DataObject {
             case USERNAME_FIELD_INDEX:
                 username = (String) value;
                 break;
+            case NAME_FIELD_INDEX:
+                name = (String) value;
             case HASH_FIELD_INDEX:
                 hash = Database.hashPassword((String) value);
                 break;
@@ -107,7 +124,7 @@ public final class User implements DataObject {
                 ", hash='" + hash + '\'' +
                 ", role=" + role +
                 '}';*/
-        return username;
+        return name;
     }
 
     public enum Role {

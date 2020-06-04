@@ -94,7 +94,7 @@ public final class Database {
             if (!usernameExist("admin")) {
                 User user = new User();
                 user.setUsername("admin");
-                user.setHash(Database.hashPassword("admin"));
+                user.setHash(Database.hashPassword("1234"));
                 user.setRole(User.Role.ADMINISTRATOR);
                 users.create(user);
             }
