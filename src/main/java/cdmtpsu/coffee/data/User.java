@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Objects;
 
 @DatabaseTable(tableName = User.TABLE_NAME)
-public final class User {
+public final class User implements DataObject {
     /* names */
     public static final String TABLE_NAME = "user";
     public static final String USERNAME_FIELD_NAME = "username";
@@ -54,6 +54,7 @@ public final class User {
         this.role = role;
     }
 
+    @Override
     public Object getValue(int fieldIndex) {
         switch (fieldIndex) {
             case USERNAME_FIELD_INDEX:
@@ -67,13 +68,14 @@ public final class User {
         }
     }
 
+    @Override
     public void setValue(int fieldIndex, Object value) {
         switch (fieldIndex) {
             case USERNAME_FIELD_INDEX:
                 username = (String) value;
                 break;
             case HASH_FIELD_INDEX:
-                hash = (String) value;
+                hash = Database.hashPassword((String) value);
                 break;
             case ROLE_FIELD_INDEX:
                 role = (Role) value;
@@ -91,6 +93,17 @@ public final class User {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        /*return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", hash='" + hash + '\'' +
+                ", role=" + role +
+                '}';*/
+        return username;
     }
 
     public enum Role {

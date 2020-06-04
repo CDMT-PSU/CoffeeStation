@@ -6,7 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Objects;
 
 @DatabaseTable(tableName = OrderItem.TABLE_NAME)
-public final class OrderItem {
+public final class OrderItem implements DataObject {
     /* names */
     public static final String TABLE_NAME = "order_item";
     public static final String ORDER_FIELD_NAME = "order_id";
@@ -53,6 +53,7 @@ public final class OrderItem {
         this.amount = amount;
     }
 
+    @Override
     public Object getValue(int fieldIndex) {
         switch (fieldIndex) {
             case ORDER_FIELD_INDEX:
@@ -66,6 +67,7 @@ public final class OrderItem {
         }
     }
 
+    @Override
     public void setValue(int fieldIndex, Object value) {
         switch (fieldIndex) {
             case ORDER_FIELD_INDEX:
@@ -91,5 +93,15 @@ public final class OrderItem {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "id=" + id +
+                ", order=" + order +
+                ", menuItem=" + menuItem +
+                ", amount=" + amount +
+                '}';
     }
 }

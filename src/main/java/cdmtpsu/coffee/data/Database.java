@@ -14,12 +14,24 @@ import java.util.Base64;
 import java.util.Objects;
 
 public final class Database {
+    public static final String USERNAME_PATTERN = "^[A-Za-z0-9_]{4,15}$";
+    public static final String PASSWORD_PATTERN = "[\\s\\S]{4,15}$";
+
+    private static Database instance;
+
+    public static Database getInstance() {
+        if (instance == null) {
+            instance = new Database();
+        }
+        return instance;
+    }
+
     public static boolean isValidUsername(String username) {
-        return username.matches("^[A-Za-z0-9_]{4,15}$");
+        return username.matches(USERNAME_PATTERN);
     }
 
     public static boolean isValidPassword(String password) {
-        return password.matches("[\\s\\S]{4,15}$");
+        return password.matches(PASSWORD_PATTERN);
     }
 
     public static String hashPassword(String password) {
@@ -49,15 +61,6 @@ public final class Database {
         System.arraycopy(saltAndHash, 0, salt, 0, 16);
         return Objects.equals(hashPassword(salt, password), hash);
     }
-
-    public static Database getInstance() {
-        if (instance == null) {
-            instance = new Database();
-        }
-        return instance;
-    }
-
-    private static Database instance;
 
     private final JdbcConnectionSource connectionSource;
     /* dao */

@@ -6,7 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Objects;
 
 @DatabaseTable(tableName = MenuItem.TABLE_NAME)
-public final class MenuItem {
+public final class MenuItem implements DataObject {
     /* names */
     public static final String TABLE_NAME = "menu_item";
     public static final String NAME_FIELD_NAME = "name";
@@ -41,6 +41,7 @@ public final class MenuItem {
         this.price = price;
     }
 
+    @Override
     public Object getValue(int fieldIndex) {
         switch (fieldIndex) {
             case NAME_FIELD_INDEX:
@@ -52,6 +53,7 @@ public final class MenuItem {
         }
     }
 
+    @Override
     public void setValue(int fieldIndex, Object value) {
         switch (fieldIndex) {
             case NAME_FIELD_INDEX:
@@ -74,5 +76,15 @@ public final class MenuItem {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        /*return "MenuItem{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                '}';*/
+        return name;
     }
 }
