@@ -54,7 +54,7 @@ public final class StartupWindow {
         frame.setVisible(true);
     }
 
-    private static final class LogInPanel extends JPanel {
+    private /*static*/ final class LogInPanel extends JPanel {
         /* ui components */
         private final JLabel usernameLabel;
         private final JTextField usernameTextField;
@@ -114,7 +114,9 @@ public final class StartupWindow {
                         JOptionPane.ERROR_MESSAGE);*/
             }
             if (user != null && Database.authenticate(user, password)) {
-                System.out.println("SUCCESS!!");
+                /*System.out.println("SUCCESS!!");*/
+                frame.dispose();
+                new MainWindow(user).create();
             } else {
                 JOptionPane.showMessageDialog(this,
                         "Учетная запись с указанными данными не существует",
@@ -231,6 +233,7 @@ public final class StartupWindow {
                             JOptionPane.PLAIN_MESSAGE);
                     /* clear all text fields */
                     usernameTextField.setText(null);
+                    nameTextField.setText(null);
                     passwordField.setText(null);
                     repeatPasswordField.setText(null);
                 } catch (SQLException e) {
