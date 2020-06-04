@@ -16,15 +16,17 @@ public final class OrderTab extends Tab<Order> {
     public OrderTab(User user) {
         super(
                 new String[]{
+                        "Номер",
                         "Пользователь",
                         "Дата"
                 },
                 new Class[]{
+                        Void.class, /* crutch */
                         User.class,
                         String.class
                 },
                 Database.getInstance().getOrders(),
-                user.getRole() == User.Role.USER,
+                true,
                 user.getRole() == User.Role.ADMINISTRATOR,
                 user.getRole() == User.Role.ADMINISTRATOR);
         setCellEditor("Пользователь", new DaoCellEditor<>(Database.getInstance().getUsers()));

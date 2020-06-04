@@ -19,9 +19,11 @@ public final class OrderItem implements DataObject {
 
     @DatabaseField(generatedId = true)
     private int id;
-    @DatabaseField(columnName = ORDER_FIELD_NAME, foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(columnName = ORDER_FIELD_NAME, foreign = true, foreignAutoRefresh = true,
+            columnDefinition = "INTEGER CONSTRAINT `order_id` REFERENCES `order`(id) ON DELETE CASCADE")
     private Order order;
-    @DatabaseField(columnName = MENU_ITEM_FIELD_NAME, foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(columnName = MENU_ITEM_FIELD_NAME, foreign = true, foreignAutoRefresh = true,
+            columnDefinition = "INTEGER CONSTRAINT `menu_item_id` REFERENCES `menu_item`(id) ON DELETE CASCADE")
     private MenuItem menuItem;
     @DatabaseField(columnName = AMOUNT_FIELD_NAME)
     private int amount;

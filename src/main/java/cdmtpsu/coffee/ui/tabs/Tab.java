@@ -82,7 +82,7 @@ public abstract class Tab<T extends DataObject> extends JPanel {
         if (rows.length > 0) {
             var result = JOptionPane.showConfirmDialog(
                     owner,
-                    "Вы действительно хотите удалить указанные записи?",
+                    "Вы действительно хотите удалить указанные записи?\nСвязанные записи также будут удалены.",
                     "Сообщение",
                     JOptionPane.YES_NO_OPTION
             );

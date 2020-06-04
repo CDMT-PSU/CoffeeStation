@@ -5,11 +5,23 @@ import cdmtpsu.coffee.data.Ingredient;
 import cdmtpsu.coffee.data.MenuItem;
 import cdmtpsu.coffee.data.RecipeItem;
 import cdmtpsu.coffee.data.User;
+import cdmtpsu.coffee.util.CenterLayout;
 import cdmtpsu.coffee.util.DaoCellEditor;
 import cdmtpsu.coffee.util.SpinnerCellEditor;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import java.awt.Dimension;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 
 public final class RecipeItemTab extends Tab<RecipeItem> {
@@ -65,11 +77,114 @@ public final class RecipeItemTab extends Tab<RecipeItem> {
             return null;
         }
 
-        RecipeItem recipeItem = new RecipeItem();
-        recipeItem.setMenuItem(menuItem);
-        recipeItem.setIngredient(ingredient);
-        recipeItem.setAmount(1);
+        AddDialog dialog = new AddDialog();
+        dialog.setVisible(true);
+        return dialog.getResult();
+    }
 
-        return recipeItem;
+    private static final class AddDialog extends JDialog {
+        /* ui components */
+        private final JLabel menuItemLabel;
+        private final JComboBox<MenuItem> menuItemComboBox;
+        private final JLabel ingredientLabel;
+        private final JComboBox<Ingredient> ingredientComboBox;
+        private final JLabel amountLabel;
+        private final JSpinner amountSpinner;
+        private final JButton okButton;
+        private final JButton cancelButton;
+        private final JPanel buttonPanel;
+        private final JPanel contentPane;
+
+        private RecipeItem result;
+
+        AddDialog() {
+            /* init components */
+            menuItemLabel = new JLabel();
+            menuItemComboBox = new JComboBox<>();
+            ingredientLabel = new JLabel();
+            ingredientComboBox = new JComboBox<>();
+            amountLabel = new JLabel();
+            amountSpinner = new JSpinner();
+            okButton = new JButton();
+            cancelButton = new JButton();
+            buttonPanel = new JPanel();
+            contentPane = new JPanel();
+
+            /* menuItemLabel */
+            menuItemLabel.setText("Позиция меню");
+
+            /* menuItemComboBox */
+            menuItemComboBox.setPreferredSize(new Dimension(150, 20));
+            Database.getInstance().getMenuItems().forEach(menuItemComboBox::addItem);
+
+            /* ingredientLabel */
+            ingredientLabel.setText("Ингредиент");
+
+            /* ingredientComboBox */
+            ingredientComboBox.setPreferredSize(new Dimension(150, 20));
+            Database.getInstance().getIngredients().forEach(ingredientComboBox::addItem);
+
+            /* amountLabel */
+            amountLabel.setText("Количество");
+
+            /* amountSpinner */
+            amountSpinner.setPreferredSize(new Dimension(150, 20));
+            amountSpinner.setModel(new SpinnerNumberModel(1, 1, 999999, 1));
+
+            /* okButton */
+            okButton.setText("ОК");
+            okButton.addActionListener(this::okButtonClicked);
+
+            /* cancelButton */
+            cancelButton.setText("Отмена");
+            cancelButton.addActionListener(this::cancelButtonClicked);
+
+            /* buttonPanel */
+            buttonPanel.add(okButton);
+            buttonPanel.add(cancelButton);
+
+            /* contentPane */
+            contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            contentPane.setLayout(new CenterLayout());
+            contentPane.add(menuItemLabel);
+            contentPane.add(menuItemComboBox);
+            contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
+            contentPane.add(ingredientLabel);
+            contentPane.add(ingredientComboBox);
+            contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
+            contentPane.add(amountLabel);
+            contentPane.add(amountSpinner);
+            contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
+            contentPane.add(buttonPanel);
+
+            /* this */
+            setTitle("Добавить позицию рецепта");
+            setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            setContentPane(contentPane);
+            setModal(true);
+            pack();
+            setLocationRelativeTo(null);
+        }
+
+        private void okButtonClicked(ActionEvent event) {
+            MenuItem menuItem = (MenuItem) menuItemComboBox.getSelectedItem();
+            Ingredient ingredient = (Ingredient) ingredientComboBox.getSelectedItem();
+            int amount = (int) amountSpinner.getValue();
+
+            result = new RecipeItem();
+            result.setMenuItem(menuItem);
+            result.setIngredient(ingredient);
+            result.setAmount(amount);
+
+            dispose();
+        }
+
+        private void cancelButtonClicked(ActionEvent event) {
+            dispose();
+        }
+
+        RecipeItem getResult() {
+            return result;
+        }
     }
 }

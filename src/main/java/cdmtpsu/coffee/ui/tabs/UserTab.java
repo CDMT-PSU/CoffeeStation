@@ -125,7 +125,7 @@ public final class UserTab extends Tab<User> {
             contentPane.add(buttonPanel);
 
             /* this */
-            setTitle("Пользователь");
+            setTitle("Добавить пользователя");
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             setContentPane(contentPane);
             setModal(true);
@@ -148,7 +148,7 @@ public final class UserTab extends Tab<User> {
 
             if (Database.getInstance().usernameExist(username)) {
                 JOptionPane.showMessageDialog(this,
-                        "Учетная запись с указанным именем уже существует",
+                        "Пользователь с указанным именем уже существует",
                         "Ошибка",
                         JOptionPane.ERROR_MESSAGE);
                 return;

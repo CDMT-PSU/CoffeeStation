@@ -85,6 +85,6 @@ public final class Ingredient implements DataObject {
                 ", name='" + name + '\'' +
                 ", unit='" + unit + '\'' +
                 '}';*/
-        return name;
+        return name + ", " + unit;
     }
 }

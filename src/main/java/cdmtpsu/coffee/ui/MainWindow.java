@@ -1,5 +1,6 @@
 package cdmtpsu.coffee.ui;
 
+import cdmtpsu.coffee.Main;
 import cdmtpsu.coffee.data.User;
 import cdmtpsu.coffee.ui.tabs.IngredientTab;
 import cdmtpsu.coffee.ui.tabs.MenuItemTab;
@@ -69,6 +70,7 @@ public final class MainWindow {
 
         /* frame */
         frame.setTitle("CoffeeStation");
+        frame.setIconImages(Main.ICONS);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(contentPane);
         frame.pack();
@@ -79,6 +81,7 @@ public final class MainWindow {
         Tab<?> tab = (Tab<?>) tabbedPane.getSelectedComponent();
         addButton.setEnabled(tab.userCanAdd());
         removeButton.setEnabled(tab.userCanRemove());
+        tab.refresh();
     }
 
     private void addButtonClicked(ActionEvent event) {

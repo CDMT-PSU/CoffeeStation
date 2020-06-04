@@ -1,5 +1,6 @@
 package cdmtpsu.coffee.ui;
 
+import cdmtpsu.coffee.Main;
 import cdmtpsu.coffee.data.Database;
 import cdmtpsu.coffee.data.User;
 import cdmtpsu.coffee.util.CenterLayout;
@@ -42,6 +43,7 @@ public final class StartupWindow {
 
         /* frame */
         frame.setTitle("CoffeeStation");
+        frame.setIconImages(Main.ICONS);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(contentPane);
         frame.pack();
