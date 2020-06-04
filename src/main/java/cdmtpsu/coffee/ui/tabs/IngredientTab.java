@@ -71,13 +71,13 @@ public final class IngredientTab extends Tab<Ingredient> {
             nameLabel.setText("Название");
 
             /* nameTextField */
-            nameTextField.setPreferredSize(new Dimension(150, 20));
+            nameTextField.setPreferredSize(new Dimension(250, 20));
 
             /* unitLabel */
             unitLabel.setText("Единицы измерения");
 
             /* unitTextField */
-            unitTextField.setPreferredSize(new Dimension(150, 20));
+            unitTextField.setPreferredSize(new Dimension(250, 20));
 
             /* okButton */
             okButton.setText("ОК");
