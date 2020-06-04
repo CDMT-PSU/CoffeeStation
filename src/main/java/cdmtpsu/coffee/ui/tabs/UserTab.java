@@ -88,27 +88,27 @@ public final class UserTab extends Tab<User> {
             usernameLabel.setText("Имя пользователя");
 
             /* usernameTextField */
-            usernameTextField.setPreferredSize(new Dimension(150, 20));
+            usernameTextField.setPreferredSize(new Dimension(250, 20));
             SwingUtils.onValueChanged(usernameTextField, this::fieldValueChanged);
 
             /* nameLabel */
             nameLabel.setText("ФИО");
 
             /* nameTextField */
-            nameTextField.setPreferredSize(new Dimension(150, 20));
+            nameTextField.setPreferredSize(new Dimension(250, 20));
 
             /* passwordLabel */
             passwordLabel.setText("Пароль");
 
             /* passwordField */
-            passwordField.setPreferredSize(new Dimension(150, 20));
+            passwordField.setPreferredSize(new Dimension(250, 20));
             SwingUtils.onValueChanged(passwordField, this::fieldValueChanged);
 
             /* roleLabel */
             roleLabel.setText("Роль");
 
             /* roleComboBox */
-            roleComboBox.setPreferredSize(new Dimension(150, 20));
+            roleComboBox.setPreferredSize(new Dimension(250, 20));
             EnumSet.allOf(User.Role.class).forEach(roleComboBox::addItem);
 
             /* okButton */

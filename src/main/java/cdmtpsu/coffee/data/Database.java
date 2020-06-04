@@ -3,6 +3,7 @@ package cdmtpsu.coffee.data;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.table.TableUtils;
 
 import java.nio.charset.StandardCharsets;
@@ -11,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.Base64;
+import java.util.List;
 import java.util.Objects;
 
 public final class Database {
@@ -135,5 +137,42 @@ public final class Database {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public String getReceiptText(Order order) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("==============================");
+        builder.append(System.lineSeparator());
+        builder.append("ФИО кассира: ").append(order.getUser().getName());
+        builder.append(System.lineSeparator());
+        builder.append("Дата: ").append(order.getDate());
+        builder.append(System.lineSeparator());
+        builder.append("==============================");
+        builder.append(System.lineSeparator());
+        try {
+            List<OrderItem> list = orderItems.queryBuilder()
+                    .where().eq(OrderItem.ORDER_FIELD_NAME, order.getId())
+                    .query();
+            int sum = 0;
+            for (OrderItem orderItem : list) {
+                MenuItem menuItem = orderItem.getMenuItem();
+                int value = menuItem.getPrice() * orderItem.getAmount();
+                builder.append(menuItem.getName())
+                        .append(", ")
+                        .append(menuItem.getPrice())
+                        .append(" руб. ").append("* ")
+                        .append(orderItem.getAmount()).append(" = ")
+                        .append(value)
+                        .append(" руб.");
+                builder.append(System.lineSeparator());
+                sum += value;
+            }
+            builder.append("==============================");
+            builder.append(System.lineSeparator());
+            builder.append("Итого: ").append(sum).append(" руб.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return builder.toString();
     }
 }

@@ -27,6 +27,10 @@ public final class Order implements DataObject {
     public Order() {
     }
 
+    public int getId() {
+        return id;
+    }
+
     public User getUser() {
         return user;
     }
