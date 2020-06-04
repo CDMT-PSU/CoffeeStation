@@ -12,8 +12,8 @@ public final class MenuItem {
     public static final String NAME_FIELD_NAME = "name";
     public static final String PRICE_FIELD_NAME = "price";
     /* indices */
-    private static final int NAME_FIELD_INDEX = 0;
-    private static final int PRICE_FIELD_INDEX = 1;
+    public static final int NAME_FIELD_INDEX = 0;
+    public static final int PRICE_FIELD_INDEX = 1;
 
     @DatabaseField(generatedId = true)
     private int id;
@@ -23,6 +23,22 @@ public final class MenuItem {
     private int price;
 
     public MenuItem() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public Object getValue(int fieldIndex) {

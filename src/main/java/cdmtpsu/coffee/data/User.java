@@ -14,9 +14,9 @@ public final class User {
     public static final String HASH_FIELD_NAME = "hash";
     public static final String ROLE_FIELD_NAME = "role";
     /* indices */
-    private static final int USERNAME_FIELD_INDEX = 0;
-    private static final int HASH_FIELD_INDEX = 1;
-    private static final int ROLE_FIELD_INDEX = 2;
+    public static final int USERNAME_FIELD_INDEX = 0;
+    public static final int HASH_FIELD_INDEX = 1;
+    public static final int ROLE_FIELD_INDEX = 2;
 
     @DatabaseField(generatedId = true)
     private int id;
@@ -28,6 +28,30 @@ public final class User {
     private Role role;
 
     public User() {
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public Object getValue(int fieldIndex) {
@@ -49,7 +73,7 @@ public final class User {
                 username = (String) value;
                 break;
             case HASH_FIELD_INDEX:
-                hash = Database.hashPassword((String) value);
+                hash = (String) value;
                 break;
             case ROLE_FIELD_INDEX:
                 role = (Role) value;
@@ -69,7 +93,7 @@ public final class User {
         return Objects.hash(id);
     }
 
-    private enum Role {
+    public enum Role {
         USER, ADMINISTRATOR
     }
 }

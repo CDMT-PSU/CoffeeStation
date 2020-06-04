@@ -12,8 +12,8 @@ public final class Order {
     public static final String USER_FIELD_NAME = "user_id";
     public static final String DATE_FIELD_NAME = "date";
     /* indices */
-    private static final int USER_FIELD_INDEX = 0;
-    private static final int DATE_FIELD_INDEX = 1;
+    public static final int USER_FIELD_INDEX = 0;
+    public static final int DATE_FIELD_INDEX = 1;
 
     @DatabaseField(generatedId = true)
     private int id;
@@ -23,6 +23,22 @@ public final class Order {
     private String date;
 
     public Order() {
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public Object getValue(int fieldIndex) {
