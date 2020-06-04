@@ -13,9 +13,9 @@ public final class RecipeItem {
     public static final String INGREDIENT_FIELD_NAME = "ingredient_id";
     public static final String AMOUNT_FIELD_NAME = "amount";
     /* indices */
-    private static final int MENU_ITEM_FIELD_INDEX = 0;
-    private static final int INGREDIENT_FIELD_INDEX = 1;
-    private static final int AMOUNT_FIELD_INDEX = 2;
+    public static final int MENU_ITEM_FIELD_INDEX = 0;
+    public static final int INGREDIENT_FIELD_INDEX = 1;
+    public static final int AMOUNT_FIELD_INDEX = 2;
 
     @DatabaseField(generatedId = true)
     private int id;
@@ -23,10 +23,34 @@ public final class RecipeItem {
     private MenuItem menuItem;
     @DatabaseField(columnName = INGREDIENT_FIELD_NAME, foreign = true, foreignAutoRefresh = true)
     private Ingredient ingredient;
-    @DatabaseField(columnName = AMOUNT_FIELD_NAME, foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(columnName = AMOUNT_FIELD_NAME)
     private int amount;
 
     public RecipeItem() {
+    }
+
+    public MenuItem getMenuItem() {
+        return menuItem;
+    }
+
+    public void setMenuItem(MenuItem menuItem) {
+        this.menuItem = menuItem;
+    }
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     public Object getValue(int fieldIndex) {

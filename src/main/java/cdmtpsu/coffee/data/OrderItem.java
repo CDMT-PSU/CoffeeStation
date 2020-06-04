@@ -13,9 +13,9 @@ public final class OrderItem {
     public static final String MENU_ITEM_FIELD_NAME = "menu_item_id";
     public static final String AMOUNT_FIELD_NAME = "amount";
     /* indices */
-    private static final int ORDER_FIELD_INDEX = 0;
-    private static final int MENU_ITEM_FIELD_INDEX = 1;
-    private static final int AMOUNT_FIELD_INDEX = 2;
+    public static final int ORDER_FIELD_INDEX = 0;
+    public static final int MENU_ITEM_FIELD_INDEX = 1;
+    public static final int AMOUNT_FIELD_INDEX = 2;
 
     @DatabaseField(generatedId = true)
     private int id;
@@ -27,6 +27,30 @@ public final class OrderItem {
     private int amount;
 
     public OrderItem() {
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public MenuItem getMenuItem() {
+        return menuItem;
+    }
+
+    public void setMenuItem(MenuItem menuItem) {
+        this.menuItem = menuItem;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     public Object getValue(int fieldIndex) {

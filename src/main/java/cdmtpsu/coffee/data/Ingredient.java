@@ -13,9 +13,9 @@ public final class Ingredient {
     public static final String AMOUNT_FIELD_NAME = "amount";
     public static final String UNIT_FIELD_NAME = "unit";
     /* indices */
-    private static final int NAME_FIELD_INDEX = 0;
-    private static final int AMOUNT_FIELD_INDEX = 1;
-    private static final int UNIT_FIELD_INDEX = 2;
+    public static final int NAME_FIELD_INDEX = 0;
+    public static final int AMOUNT_FIELD_INDEX = 1;
+    public static final int UNIT_FIELD_INDEX = 2;
 
     @DatabaseField(generatedId = true)
     private int id;
@@ -27,6 +27,30 @@ public final class Ingredient {
     private String unit;
 
     public Ingredient() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public Object getValue(int fieldIndex) {
