@@ -6,7 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Objects;
 
 @DatabaseTable(tableName = RecipeItem.TABLE_NAME)
-public final class RecipeItem {
+public final class RecipeItem implements DataObject {
     /* names */
     public static final String TABLE_NAME = "recipe_item";
     public static final String MENU_ITEM_FIELD_NAME = "menu_item_id";
@@ -19,9 +19,11 @@ public final class RecipeItem {
 
     @DatabaseField(generatedId = true)
     private int id;
-    @DatabaseField(columnName = MENU_ITEM_FIELD_NAME, foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(columnName = MENU_ITEM_FIELD_NAME, foreign = true, foreignAutoRefresh = true,
+            columnDefinition = "INTEGER CONSTRAINT `menu_item_id` REFERENCES `menu_item`(id) ON DELETE CASCADE")
     private MenuItem menuItem;
-    @DatabaseField(columnName = INGREDIENT_FIELD_NAME, foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(columnName = INGREDIENT_FIELD_NAME, foreign = true, foreignAutoRefresh = true,
+            columnDefinition = "INTEGER CONSTRAINT `ingredient_id` REFERENCES `ingredient`(id) ON DELETE CASCADE")
     private Ingredient ingredient;
     @DatabaseField(columnName = AMOUNT_FIELD_NAME)
     private int amount;
@@ -53,6 +55,7 @@ public final class RecipeItem {
         this.amount = amount;
     }
 
+    @Override
     public Object getValue(int fieldIndex) {
         switch (fieldIndex) {
             case MENU_ITEM_FIELD_INDEX:
@@ -66,6 +69,7 @@ public final class RecipeItem {
         }
     }
 
+    @Override
     public void setValue(int fieldIndex, Object value) {
         switch (fieldIndex) {
             case MENU_ITEM_FIELD_INDEX:
@@ -73,6 +77,7 @@ public final class RecipeItem {
                 break;
             case INGREDIENT_FIELD_INDEX:
                 ingredient = (Ingredient) value;
+                break;
             case AMOUNT_FIELD_INDEX:
                 amount = (int) value;
                 break;
@@ -90,5 +95,15 @@ public final class RecipeItem {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "RecipeItem{" +
+                "id=" + id +
+                ", menuItem=" + menuItem +
+                ", ingredient=" + ingredient +
+                ", amount=" + amount +
+                '}';
     }
 }

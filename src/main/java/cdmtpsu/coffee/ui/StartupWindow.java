@@ -1,5 +1,6 @@
 package cdmtpsu.coffee.ui;
 
+import cdmtpsu.coffee.Main;
 import cdmtpsu.coffee.data.Database;
 import cdmtpsu.coffee.data.User;
 import cdmtpsu.coffee.util.CenterLayout;
@@ -42,6 +43,7 @@ public final class StartupWindow {
 
         /* frame */
         frame.setTitle("CoffeeStation");
+        frame.setIconImages(Main.ICONS);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(contentPane);
         frame.pack();
@@ -126,6 +128,8 @@ public final class StartupWindow {
         /* ui components */
         private final JLabel usernameLabel;
         private final JTextField usernameTextField;
+        private final JLabel nameLabel;
+        private final JTextField nameTextField;
         private final JLabel passwordLabel;
         private final JPasswordField passwordField;
         private final JLabel repeatPasswordLabel;
@@ -136,6 +140,8 @@ public final class StartupWindow {
             /* init components */
             usernameLabel = new JLabel();
             usernameTextField = new JTextField();
+            nameLabel = new JLabel();
+            nameTextField = new JTextField();
             passwordLabel = new JLabel();
             passwordField = new JPasswordField();
             repeatPasswordLabel = new JLabel();
@@ -150,6 +156,12 @@ public final class StartupWindow {
             /* usernameTextField */
             usernameTextField.setPreferredSize(new Dimension(150, 20));
             SwingUtils.onValueChanged(usernameTextField, this::fieldValueChanged);
+
+            /* nameLabel */
+            nameLabel.setText("ФИО");
+
+            /* nameTextField */
+            nameTextField.setPreferredSize(new Dimension(150, 20));
 
             /* passwordLabel */
             passwordLabel.setText("Пароль (?)");
@@ -175,6 +187,9 @@ public final class StartupWindow {
             add(usernameLabel);
             add(usernameTextField);
             add(Box.createRigidArea(new Dimension(0, 10)));
+            add(nameLabel);
+            add(nameTextField);
+            add(Box.createRigidArea(new Dimension(0, 10)));
             add(passwordLabel);
             add(passwordField);
             add(Box.createRigidArea(new Dimension(0, 10)));
@@ -197,11 +212,13 @@ public final class StartupWindow {
 
         private void signUpButtonClicked(ActionEvent event) {
             String username = usernameTextField.getText();
+            String name = nameTextField.getText();
             String hash = Database.hashPassword(passwordField.getText());
             User.Role role = User.Role.USER;
 
             User user = new User();
             user.setUsername(username);
+            user.setName(name);
             user.setHash(hash);
             user.setRole(role);
 
