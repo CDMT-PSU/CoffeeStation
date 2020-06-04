@@ -11,7 +11,7 @@ public class Main {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ignored) {
         }
-        Database.dummy();
+        Database.getInstance(); // init
         new StartupWindow().create();
     }
 }
