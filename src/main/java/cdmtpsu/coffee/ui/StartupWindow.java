@@ -183,7 +183,7 @@ public final class StartupWindow {
             add(Box.createRigidArea(new Dimension(0, 10)));
             add(signUpButton);
 
-            /* for the first time - intentionally */
+            /* for the first time - manually */
             fieldValueChanged();
         }
 
@@ -201,9 +201,9 @@ public final class StartupWindow {
             User.Role role = User.Role.USER;
 
             User user = new User();
-            user.setValue(User.USERNAME_FIELD_INDEX, username);
-            user.setValue(User.HASH_FIELD_INDEX, hash);
-            user.setValue(User.ROLE_FIELD_INDEX, role);
+            user.setUsername(username);
+            user.setHash(hash);
+            user.setRole(role);
 
             if (!Database.usernameExist(username)) {
                 try {

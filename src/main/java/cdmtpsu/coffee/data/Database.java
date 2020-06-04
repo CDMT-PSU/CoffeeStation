@@ -26,6 +26,13 @@ public final class Database {
     static {
         try {
             connectionSource = new JdbcConnectionSource("jdbc:sqlite:coffee.db");
+            /* create tables if they are not exists */
+            TableUtils.createTableIfNotExists(connectionSource, Ingredient.class);
+            TableUtils.createTableIfNotExists(connectionSource, MenuItem.class);
+            TableUtils.createTableIfNotExists(connectionSource, Order.class);
+            TableUtils.createTableIfNotExists(connectionSource, OrderItem.class);
+            TableUtils.createTableIfNotExists(connectionSource, RecipeItem.class);
+            TableUtils.createTableIfNotExists(connectionSource, User.class);
             /* init dao */
             ingredients = DaoManager.createDao(connectionSource, Ingredient.class);
             menuItems = DaoManager.createDao(connectionSource, MenuItem.class);
@@ -35,13 +42,15 @@ public final class Database {
             users = DaoManager.createDao(connectionSource, User.class);
             /* crutch */
             users.executeRawNoArgs("PRAGMA foreign_keys = ON");
-            /* create tables if they are not exists */
-            TableUtils.createTableIfNotExists(connectionSource, Ingredient.class);
-            TableUtils.createTableIfNotExists(connectionSource, MenuItem.class);
-            TableUtils.createTableIfNotExists(connectionSource, Order.class);
-            TableUtils.createTableIfNotExists(connectionSource, OrderItem.class);
-            TableUtils.createTableIfNotExists(connectionSource, RecipeItem.class);
-            TableUtils.createTableIfNotExists(connectionSource, User.class);
+            /* add admin if it doesn't exist */
+            if (!usernameExist("admin")) {
+                User user = new User();
+                user.setUsername("admin");
+                user.setHash(Database.hashPassword("admin"));
+                user.setRole(User.Role.ADMINISTRATOR);
+                users.create(user);
+            }
+
         } catch (SQLException e) {
             throw new RuntimeException("unable to access database", e);
         }
