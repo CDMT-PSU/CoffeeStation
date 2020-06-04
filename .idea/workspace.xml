@@ -39,6 +39,9 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.gitignore" />
+  </component>
   <component name="WindowStateProjectService">
     <state x="740" y="278" key="FileChooserDialogImpl" timestamp="1591258742295">
       <screen x="0" y="0" width="1920" height="1040" />
