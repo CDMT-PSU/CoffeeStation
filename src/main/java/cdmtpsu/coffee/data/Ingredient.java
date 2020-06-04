@@ -10,19 +10,15 @@ public final class Ingredient {
     /* names */
     public static final String TABLE_NAME = "ingredient";
     public static final String NAME_FIELD_NAME = "name";
-    public static final String AMOUNT_FIELD_NAME = "amount";
     public static final String UNIT_FIELD_NAME = "unit";
     /* indices */
     public static final int NAME_FIELD_INDEX = 0;
-    public static final int AMOUNT_FIELD_INDEX = 1;
-    public static final int UNIT_FIELD_INDEX = 2;
+    public static final int UNIT_FIELD_INDEX = 1;
 
     @DatabaseField(generatedId = true)
     private int id;
     @DatabaseField(columnName = NAME_FIELD_NAME)
     private String name;
-    @DatabaseField(columnName = AMOUNT_FIELD_NAME)
-    private int amount;
     @DatabaseField(columnName = UNIT_FIELD_NAME)
     private String unit;
 
@@ -37,14 +33,6 @@ public final class Ingredient {
         this.name = name;
     }
 
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
     public String getUnit() {
         return unit;
     }
@@ -57,8 +45,6 @@ public final class Ingredient {
         switch (fieldIndex) {
             case NAME_FIELD_INDEX:
                 return name;
-            case AMOUNT_FIELD_INDEX:
-                return amount;
             case UNIT_FIELD_INDEX:
                 return unit;
             default:
@@ -70,9 +56,6 @@ public final class Ingredient {
         switch (fieldIndex) {
             case NAME_FIELD_INDEX:
                 name = (String) value;
-                break;
-            case AMOUNT_FIELD_INDEX:
-                amount = (int) value;
                 break;
             case UNIT_FIELD_INDEX:
                 unit = (String) value;

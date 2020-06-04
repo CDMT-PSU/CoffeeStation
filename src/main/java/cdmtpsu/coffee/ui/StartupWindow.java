@@ -101,7 +101,7 @@ public final class StartupWindow {
 
             User user = null;
             try {
-                user = Database.getUsers().queryBuilder()
+                user = Database.getInstance().getUsers().queryBuilder()
                         .where().eq(User.USERNAME_FIELD_NAME, username)
                         .queryForFirst();
             } catch (SQLException e) {
@@ -205,9 +205,9 @@ public final class StartupWindow {
             user.setHash(hash);
             user.setRole(role);
 
-            if (!Database.usernameExist(username)) {
+            if (!Database.getInstance().usernameExist(username)) {
                 try {
-                    Database.getUsers().create(user);
+                    Database.getInstance().getUsers().create(user);
                     JOptionPane.showMessageDialog(this,
                             "Учетная запись успешно создана",
                             "Сообщение",
