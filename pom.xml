@@ -6,7 +6,7 @@
 
     <groupId>cdmtpsu.coffee</groupId>
     <artifactId>CoffeeStation</artifactId>
-    <version>pre-1.0</version>
+    <version>v1.0-pre</version>
 
     <properties>
         <maven.compiler.target>13</maven.compiler.target>
