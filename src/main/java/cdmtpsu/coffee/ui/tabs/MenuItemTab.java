@@ -74,14 +74,14 @@ public final class MenuItemTab extends Tab<MenuItem> {
             nameLabel.setText("Название");
 
             /* nameTextField */
-            nameTextField.setPreferredSize(new Dimension(150, 20));
+            nameTextField.setPreferredSize(new Dimension(250, 20));
     
             /* priceLabel */
             priceLabel.setText("Цена");
 
             /* priceSpinner */
             priceSpinner.setModel(new SpinnerNumberModel(0, 0, 999999, 1));
-            priceSpinner.setPreferredSize(new Dimension(150, 20));
+            priceSpinner.setPreferredSize(new Dimension(250, 20));
 
             /* okButton */
             okButton.setText("ОК");

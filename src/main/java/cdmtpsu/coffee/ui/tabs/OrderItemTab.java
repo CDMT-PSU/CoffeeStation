@@ -132,14 +132,14 @@ public final class OrderItemTab extends Tab<OrderItem> {
             orderLabel.setText("Заказ");
 
             /* orderComboBox */
-            orderComboBox.setPreferredSize(new Dimension(150, 20));
+            orderComboBox.setPreferredSize(new Dimension(250, 20));
             queryOrders().forEach(orderComboBox::addItem);
 
             /* menuItemLabel */
             menuItemLabel.setText("Позиция меню");
 
             /* menuItemComboBox */
-            menuItemComboBox.setPreferredSize(new Dimension(150, 20));
+            menuItemComboBox.setPreferredSize(new Dimension(250, 20));
             Database.getInstance().getMenuItems().forEach(menuItemComboBox::addItem);
 
             /* amountLabel */
@@ -147,7 +147,7 @@ public final class OrderItemTab extends Tab<OrderItem> {
 
             /* amountSpinner */
             amountSpinner.setModel(new SpinnerNumberModel(1, 1, 999999, 1));
-            amountSpinner.setPreferredSize(new Dimension(150, 20));
+            amountSpinner.setPreferredSize(new Dimension(250, 20));
 
             /* okButton */
             okButton.setText("ОК");

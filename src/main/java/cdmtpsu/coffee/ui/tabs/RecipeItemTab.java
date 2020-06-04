@@ -114,21 +114,21 @@ public final class RecipeItemTab extends Tab<RecipeItem> {
             menuItemLabel.setText("Позиция меню");
 
             /* menuItemComboBox */
-            menuItemComboBox.setPreferredSize(new Dimension(150, 20));
+            menuItemComboBox.setPreferredSize(new Dimension(250, 20));
             Database.getInstance().getMenuItems().forEach(menuItemComboBox::addItem);
 
             /* ingredientLabel */
             ingredientLabel.setText("Ингредиент");
 
             /* ingredientComboBox */
-            ingredientComboBox.setPreferredSize(new Dimension(150, 20));
+            ingredientComboBox.setPreferredSize(new Dimension(250, 20));
             Database.getInstance().getIngredients().forEach(ingredientComboBox::addItem);
 
             /* amountLabel */
             amountLabel.setText("Количество");
 
             /* amountSpinner */
-            amountSpinner.setPreferredSize(new Dimension(150, 20));
+            amountSpinner.setPreferredSize(new Dimension(250, 20));
             amountSpinner.setModel(new SpinnerNumberModel(1, 1, 999999, 1));
 
             /* okButton */
