@@ -118,7 +118,7 @@ public final class MenuItemPanel extends JPanel {
             MenuItem resultMenuItem = result.getMenuItem();
             try {
                 dao.update(resultMenuItem);
-
+                /* Удаляем все `recipe_item` для данного `menu_item`. */
                 Dao<RecipeItem, Integer> dao1 = Database.getInstance().getRecipeItems();
                 dao1.queryBuilder()
                         .where()
@@ -131,11 +131,11 @@ public final class MenuItemPanel extends JPanel {
                                 e.printStackTrace();
                             }
                         });
-
+                /* Записываем новые. */
                 ArrayList<RecipeItem> resultRecipeItems = result.getRecipeItems();
                 resultRecipeItems.forEach(recipeItem -> {
                     try {
-                        Database.getInstance().getRecipeItems().create(recipeItem);
+                        dao1.create(recipeItem);
                         refresh();
                     } catch (SQLException e) {
                         e.printStackTrace();
