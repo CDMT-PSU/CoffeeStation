@@ -216,8 +216,9 @@ public final class IngredientPanel extends JPanel implements Refreshable {
     /**/
 
     private static final class TableModel extends AbstractTableModel {
-        private static final int COLUMN_COUNT = 3;
-        private static final String[] COLUMN_NAMES = {"Название", "Единицы измерения", "Количество"};
+        private static final int COLUMN_COUNT = 4;
+        private static final String[] COLUMN_NAMES =
+                {"Название", "Единицы измерения", "Количество", "Уведомлять если меньше"};
 
         private final ArrayList<Ingredient> ingredients;
 
@@ -250,6 +251,8 @@ public final class IngredientPanel extends JPanel implements Refreshable {
                     return ingredient.getUnit();
                 case 2:
                     return ingredient.getAmount();
+                case 3:
+                    return ingredient.getWarnAmount();
             }
             return null;
         }

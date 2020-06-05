@@ -26,6 +26,8 @@ public final class EditIngredientDialog extends JDialog {
     private final JTextField unitTextField;
     private final JLabel amountLabel;
     private final JSpinner amountSpinner;
+    private final JLabel warnAmountLabel;
+    private final JSpinner warnAmountSpinner;
     private final JButton okButton;
     private final JButton cancelButton;
     private final JPanel buttonPanel;
@@ -43,6 +45,8 @@ public final class EditIngredientDialog extends JDialog {
         unitTextField = new JTextField();
         amountLabel = new JLabel();
         amountSpinner = new JSpinner();
+        warnAmountLabel = new JLabel();
+        warnAmountSpinner = new JSpinner();
         okButton = new JButton();
         cancelButton = new JButton();
         buttonPanel = new JPanel();
@@ -72,6 +76,14 @@ public final class EditIngredientDialog extends JDialog {
         amountSpinner.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
         amountSpinner.setValue(initial.getAmount());
 
+        /* warnAmountLabel */
+        warnAmountLabel.setText("Уведомлять если меньше");
+
+        /* warnAmountSpinner */
+        warnAmountSpinner.setPreferredSize(new Dimension(200, 24));
+        warnAmountSpinner.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+        warnAmountSpinner.setValue(initial.getWarnAmount());
+
         /* okButton */
         okButton.setPreferredSize(new Dimension(70, 24));
         okButton.setText("ОК");
@@ -98,6 +110,9 @@ public final class EditIngredientDialog extends JDialog {
         contentPane.add(amountLabel);
         contentPane.add(amountSpinner);
         contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
+        contentPane.add(warnAmountLabel);
+        contentPane.add(warnAmountSpinner);
+        contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
         contentPane.add(buttonPanel);
 
         /* this */
@@ -122,11 +137,13 @@ public final class EditIngredientDialog extends JDialog {
         String name = nameTextField.getText();
         String unit = unitTextField.getText();
         int amount = (int) amountSpinner.getValue();
+        int warnAmount = (int) warnAmountSpinner.getValue();
 
         result = initial;
         result.setName(name);
         result.setUnit(unit);
         result.setAmount(amount);
+        result.setWarnAmount(warnAmount);
 
         dispose();
     }

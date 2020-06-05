@@ -25,6 +25,8 @@ public final class AddIngredientDialog extends JDialog {
     private final JTextField unitTextField;
     private final JLabel amountLabel;
     private final JSpinner amountSpinner;
+    private final JLabel warnAmountLabel;
+    private final JSpinner warnAmountSpinner;
     private final JButton okButton;
     private final JButton cancelButton;
     private final JPanel buttonPanel;
@@ -40,6 +42,8 @@ public final class AddIngredientDialog extends JDialog {
         unitTextField = new JTextField();
         amountLabel = new JLabel();
         amountSpinner = new JSpinner();
+        warnAmountLabel = new JLabel();
+        warnAmountSpinner = new JSpinner();
         okButton = new JButton();
         cancelButton = new JButton();
         buttonPanel = new JPanel();
@@ -65,6 +69,13 @@ public final class AddIngredientDialog extends JDialog {
         /* amountSpinner */
         amountSpinner.setPreferredSize(new Dimension(200, 24));
         amountSpinner.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+
+        /* warnAmountLabel */
+        warnAmountLabel.setText("Уведомлять если меньше");
+
+        /* warnAmountSpinner */
+        warnAmountSpinner.setPreferredSize(new Dimension(200, 24));
+        warnAmountSpinner.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
 
         /* okButton */
         okButton.setPreferredSize(new Dimension(70, 24));
@@ -92,6 +103,9 @@ public final class AddIngredientDialog extends JDialog {
         contentPane.add(amountLabel);
         contentPane.add(amountSpinner);
         contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
+        contentPane.add(warnAmountLabel);
+        contentPane.add(warnAmountSpinner);
+        contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
         contentPane.add(buttonPanel);
 
         /* this */
@@ -116,11 +130,13 @@ public final class AddIngredientDialog extends JDialog {
         String name = nameTextField.getText();
         String unit = unitTextField.getText();
         int amount = (int) amountSpinner.getValue();
+        int warnAmount = (int) warnAmountSpinner.getValue();
 
         result = new Ingredient();
         result.setName(name);
         result.setUnit(unit);
         result.setAmount(amount);
+        result.setWarnAmount(warnAmount);
 
         dispose();
     }

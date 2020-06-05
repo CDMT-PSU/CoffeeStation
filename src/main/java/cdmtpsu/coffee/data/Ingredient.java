@@ -10,6 +10,7 @@ public final class Ingredient {
     public static final String NAME_FIELD_NAME = "name";
     public static final String UNIT_FIELD_NAME = "unit";
     public static final String AMOUNT_FIELD_NAME = "amount";
+    public static final String WARN_AMOUNT_FIELD_NAME = "warn_amount";
 
     @DatabaseField(generatedId = true)
     private int id;
@@ -19,6 +20,8 @@ public final class Ingredient {
     private String unit;
     @DatabaseField(columnName = AMOUNT_FIELD_NAME)
     private int amount;
+    @DatabaseField(columnName = WARN_AMOUNT_FIELD_NAME)
+    private int warnAmount;
 
     public Ingredient() {
     }
@@ -51,6 +54,14 @@ public final class Ingredient {
         this.amount = amount;
     }
 
+    public int getWarnAmount() {
+        return warnAmount;
+    }
+
+    public void setWarnAmount(int warnAmount) {
+        this.warnAmount = warnAmount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -70,6 +81,8 @@ public final class Ingredient {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", unit='" + unit + '\'' +
+                ", amount=" + amount +
+                ", warnAmount=" + warnAmount +
                 '}';
     }
 }

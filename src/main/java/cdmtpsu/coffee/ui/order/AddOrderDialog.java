@@ -207,8 +207,9 @@ public final class AddOrderDialog extends JDialog {
                     /* Уменьшаем, обновляем в базе. */
                     int left = remaining - required;
                     ingredient.setAmount(left);
-                    /* Доабвляем в список "почти закончившихся ингредиентов" если их кол-во меньше указанного порога. */
-                    if (left <= threshold) {
+                    /* Доабвляем в список "почти закончившихся ингредиентов" если их кол-во меньше указанного порога
+                     * (`warn_amount`). */
+                    if (left < ingredient.getWarnAmount()) {
                         almostOverIngredients.add(ingredient);
                     }
                     Database.getInstance().getIngredients().update(ingredient);

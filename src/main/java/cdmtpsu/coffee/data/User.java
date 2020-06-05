@@ -87,6 +87,7 @@ public final class User {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", hash='" + hash + '\'' +
+                ", name='" + name + '\'' +
                 ", role=" + role +
                 '}';
     }
