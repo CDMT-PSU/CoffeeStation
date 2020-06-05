@@ -2,6 +2,8 @@ package cdmtpsu.coffee.ui.ingredient;
 
 import cdmtpsu.coffee.data.Database;
 import cdmtpsu.coffee.data.Ingredient;
+import cdmtpsu.coffee.data.User;
+import cdmtpsu.coffee.ui.main.MainFrame;
 import cdmtpsu.coffee.util.Refreshable;
 import com.j256.ormlite.dao.Dao;
 import javax.swing.JButton;
@@ -36,6 +38,8 @@ public final class IngredientPanel extends JPanel implements Refreshable {
 
     public IngredientPanel(Window owner) {
         this.owner = owner;
+
+        User sessionUser = ((MainFrame) owner).getUser();
 
         dao = Database.getInstance().getIngredients();
         ingredients = new ArrayList<>();
@@ -73,10 +77,14 @@ public final class IngredientPanel extends JPanel implements Refreshable {
 
         /* toolBar */
         toolBar.setFloatable(false);
-        toolBar.add(addButton);
-        toolBar.add(editButton);
-        toolBar.add(removeButton);
-        toolBar.addSeparator();
+        /* Пользователь не может добавлять, редактировать, удалять ингредиенты, но может уменьшить или увеличить их
+         * число. */
+        if (sessionUser.getRole() == User.Role.ADMINISTRATOR) {
+            toolBar.add(addButton);
+            toolBar.add(editButton);
+            toolBar.add(removeButton);
+            toolBar.addSeparator();
+        }
         toolBar.add(decreaseButton);
         toolBar.add(increaseButton);
 

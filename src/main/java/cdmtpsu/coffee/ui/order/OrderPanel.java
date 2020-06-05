@@ -3,6 +3,8 @@ package cdmtpsu.coffee.ui.order;
 import cdmtpsu.coffee.data.Database;
 import cdmtpsu.coffee.data.Order;
 import cdmtpsu.coffee.data.OrderItem;
+import cdmtpsu.coffee.data.User;
+import cdmtpsu.coffee.ui.main.MainFrame;
 import cdmtpsu.coffee.util.Refreshable;
 import com.j256.ormlite.dao.Dao;
 import javax.swing.JButton;
@@ -36,6 +38,8 @@ public final class OrderPanel extends JPanel implements Refreshable {
     public OrderPanel(Window owner) {
         this.owner = owner;
 
+        User sessionUser = ((MainFrame) owner).getUser();
+
         dao = Database.getInstance().getOrders();
         orders = new ArrayList<>();
         tableModel = new TableModel(orders);
@@ -55,10 +59,14 @@ public final class OrderPanel extends JPanel implements Refreshable {
         /* editButton */
         editButton.setText("Редактировать");
         editButton.addActionListener(this::editButtonClicked);
+        /* Только Администратор может редактировать существующие заказы. */
+        editButton.setVisible(sessionUser.getRole() == User.Role.ADMINISTRATOR);
 
         /* removeButton */
         removeButton.setText("Удалить");
         removeButton.addActionListener(this::removeButtonClicked);
+        /* Только Администратор может удалять заказы. */
+        removeButton.setVisible(sessionUser.getRole() == User.Role.ADMINISTRATOR);
 
         /* toolBar */
         toolBar.setFloatable(false);

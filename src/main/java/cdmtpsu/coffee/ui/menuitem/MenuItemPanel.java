@@ -3,6 +3,8 @@ package cdmtpsu.coffee.ui.menuitem;
 import cdmtpsu.coffee.data.Database;
 import cdmtpsu.coffee.data.MenuItem;
 import cdmtpsu.coffee.data.RecipeItem;
+import cdmtpsu.coffee.data.User;
+import cdmtpsu.coffee.ui.main.MainFrame;
 import cdmtpsu.coffee.util.Refreshable;
 import com.j256.ormlite.dao.Dao;
 import javax.swing.JButton;
@@ -29,12 +31,15 @@ public final class MenuItemPanel extends JPanel implements Refreshable {
     private final JButton addButton;
     private final JButton editButton;
     private final JButton removeButton;
+    private final JButton viewButton;
     private final JToolBar toolBar;
     private final JTable table;
     private final JScrollPane scrollPane;
 
     public MenuItemPanel(Window owner) {
         this.owner = owner;
+
+        User sessionUser = ((MainFrame) owner).getUser();
 
         dao = Database.getInstance().getMenuItems();
         menuItems = new ArrayList<>();
@@ -45,6 +50,7 @@ public final class MenuItemPanel extends JPanel implements Refreshable {
         addButton = new JButton();
         editButton = new JButton();
         removeButton = new JButton();
+        viewButton = new JButton();
         toolBar = new JToolBar();
         table = new JTable();
 
@@ -60,11 +66,20 @@ public final class MenuItemPanel extends JPanel implements Refreshable {
         removeButton.setText("Удалить");
         removeButton.addActionListener(this::removeButtonClicked);
 
+        /* viewButton */
+        viewButton.setText("Просмотреть рецепт");
+        viewButton.addActionListener(this::viewButtonClicked);
+
         /* toolBar */
         toolBar.setFloatable(false);
-        toolBar.add(addButton);
-        toolBar.add(editButton);
-        toolBar.add(removeButton);
+        /* Пользователь не может редактировать меню, лишь просматривать. */
+        if (sessionUser.getRole() == User.Role.ADMINISTRATOR) {
+            toolBar.add(addButton);
+            toolBar.add(editButton);
+            toolBar.add(removeButton);
+            toolBar.addSeparator();
+        }
+        toolBar.add(viewButton);
 
         /* table */
         table.setModel(tableModel);
@@ -164,6 +179,15 @@ public final class MenuItemPanel extends JPanel implements Refreshable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void viewButtonClicked(ActionEvent event) {
+        MenuItem menuItem = getSelectedMenuItem();
+        if (menuItem == null) {
+            showMenuItemNotSelectedMessageDialog();
+            return;
+        }
+        new ViewMenuItemDialog(owner, menuItem).setVisible(true);
     }
     /**/
 

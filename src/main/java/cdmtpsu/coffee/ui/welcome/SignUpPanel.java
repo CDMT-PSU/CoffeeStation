@@ -44,7 +44,7 @@ public final class SignUpPanel extends JPanel {
 
         /* usernameLabel */
         usernameLabel.setText("Имя пользователя (?)");
-        usernameLabel.setToolTipText("Имя пользователя должно содержать от 4 до 15 символов, а также состоять" +
+        usernameLabel.setToolTipText("Имя пользователя должно содержать от 4 до 15 символов, а также состоять " +
                 "лишь из символов латинского алфавита, цифр или символов нижнего подчеркивания.");
 
         /* usernameTextField */

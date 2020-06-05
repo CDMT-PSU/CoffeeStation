@@ -160,8 +160,6 @@ public final class AddOrderDialog extends JDialog {
         /* Те ингридиенты, количество которых почти подошло к концу. */
         ArrayList<Ingredient> almostOverIngredients = new ArrayList<>();
 
-        int threshold = 100; // TODO: вынести порог в отдельную настройку
-
         for (OrderItem orderItem : orderItems) {
             MenuItem menuItem = orderItem.getMenuItem();
             try {
@@ -238,7 +236,7 @@ public final class AddOrderDialog extends JDialog {
 
     private void cancelButtonClicked(ActionEvent event) {
         dispose();
-        
+
     }
 
     public Result getResult() {
@@ -258,7 +256,7 @@ public final class AddOrderDialog extends JDialog {
             builder.append("\n");
         }
         JOptionPane.showMessageDialog(getOwner(),
-                "Недостаточно ингредиентов для приготовления:\n" + builder.toString(), "Ошибка",
+                "Недостаточно ингредиентов для приготовления:\n" + builder.toString(), "Внимание",
                 JOptionPane.WARNING_MESSAGE);
     }
 

@@ -29,7 +29,9 @@ public final class MainFrame extends JFrame {
         tabbedPane.addTab("Заказы", new OrderPanel(this));
         tabbedPane.addTab("Меню", new MenuItemPanel(this));
         tabbedPane.addTab("Ингредиенты", new IngredientPanel(this));
-        tabbedPane.addTab("Пользователи", new UserPanel(this));
+        if (user.getRole() == User.Role.ADMINISTRATOR) { /* Только администратор может видеть вкладку "Пользователи". */
+            tabbedPane.addTab("Пользователи", new UserPanel(this));
+        }
         tabbedPane.addChangeListener(this::tabbedPaneTabChanged);
 
         /* contentPane */
