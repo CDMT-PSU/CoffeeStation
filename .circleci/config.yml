@@ -28,4 +28,4 @@ jobs: # a collection of steps
           path: target/test_reoports
       
       - store_artifacts: # store the jar as an artifact
-          path: target/CoffeStation-0.1.jar
+          path: target/CoffeStation.jar
