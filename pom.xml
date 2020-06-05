@@ -65,5 +65,23 @@
                 </executions>
             </plugin>
         </plugins>
+		<extensions>
+		<extension>
+		  <groupId>io.packagecloud.maven.wagon</groupId>
+		  <artifactId>maven-packagecloud-wagon</artifactId>
+		  <version>0.0.4</version>
+		</extension>
+	  </extensions>	
     </build>
+	
+	<distributionManagement>
+	  <repository>
+		<id>CoffeeStation</id>
+		<url>CoffeeStation+https://github.com/CDMT-PSU/CoffeeStation</url>
+	  </repository>
+	  <snapshotRepository>
+		<id>CoffeeStation</id>
+		<url>CoffeeStation+https://github.com/CDMT-PSU/CoffeeStation</url>
+	  </snapshotRepository>
+	</distributionManagement>
 </project>
