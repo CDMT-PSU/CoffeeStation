@@ -119,8 +119,11 @@ public final class AddOrderDialog extends JDialog {
         /* contentPane */
         contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         contentPane.setLayout(new CenterLayout());
-        contentPane.add(fieldPanel);
-        contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
+        /* Даем изменять пользователя и дату только админу. */
+        if (sessionUser.getRole() == User.Role.ADMINISTRATOR) {
+            contentPane.add(fieldPanel);
+            contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
+        }
         contentPane.add(orderItemPanel);
         contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
         contentPane.add(buttonPanel);
