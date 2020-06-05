@@ -1,5 +1,6 @@
 package cdmtpsu.coffee.ui.welcome;
 
+import cdmtpsu.coffee.Main;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -27,6 +28,7 @@ public final class WelcomeFrame extends JFrame {
         setTitle("CoffeeStation");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setContentPane(contentPane);
+        setIconImages(Main.ICONS);
         pack();
         setLocationRelativeTo(null);
     }

@@ -1,5 +1,6 @@
 package cdmtpsu.coffee.ui.main;
 
+import cdmtpsu.coffee.Main;
 import cdmtpsu.coffee.data.User;
 import cdmtpsu.coffee.ui.ingredient.IngredientPanel;
 import cdmtpsu.coffee.ui.menuitem.MenuItemPanel;
@@ -7,6 +8,7 @@ import cdmtpsu.coffee.ui.order.OrderPanel;
 import cdmtpsu.coffee.ui.user.UserPanel;
 import cdmtpsu.coffee.ui.welcome.WelcomeFrame;
 import cdmtpsu.coffee.util.Refreshable;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -30,11 +32,11 @@ public final class MainFrame extends JFrame {
         contentPane = new JPanel();
 
         /* tabbedPane */
-        tabbedPane.addTab("Заказы", new OrderPanel(this));
-        tabbedPane.addTab("Меню", new MenuItemPanel(this));
-        tabbedPane.addTab("Ингредиенты", new IngredientPanel(this));
+        tabbedPane.addTab("Заказы", Main.ORDER_TAB_ICON, new OrderPanel(this));
+        tabbedPane.addTab("Меню", Main.MENU_ITEM_TAB_ICON, new MenuItemPanel(this));
+        tabbedPane.addTab("Ингредиенты", Main.INGREDIENTS_TAB_ICON, new IngredientPanel(this));
         if (user.getRole() == User.Role.ADMINISTRATOR) { /* Только администратор может видеть вкладку "Пользователи". */
-            tabbedPane.addTab("Пользователи", new UserPanel(this));
+            tabbedPane.addTab("Пользователи", Main.USER_TAB_ICON, new UserPanel(this));
         }
         tabbedPane.addChangeListener(this::tabbedPaneTabChanged);
 
@@ -58,6 +60,7 @@ public final class MainFrame extends JFrame {
         });
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setContentPane(contentPane);
+        setIconImages(Main.ICONS);
         pack();
         setLocationRelativeTo(null);
     }

@@ -32,11 +32,11 @@
             <artifactId>ormlite-jdbc</artifactId>
             <version>5.1</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.seaglasslookandfeel/seaglasslookandfeel -->
+        <!-- https://mvnrepository.com/artifact/com.weblookandfeel/weblaf-ui -->
         <dependency>
-            <groupId>com.seaglasslookandfeel</groupId>
-            <artifactId>seaglasslookandfeel</artifactId>
-            <version>0.1.6.1</version>
+            <groupId>com.weblookandfeel</groupId>
+            <artifactId>weblaf-ui</artifactId>
+            <version>1.2.12</version>
         </dependency>
     </dependencies>
 
