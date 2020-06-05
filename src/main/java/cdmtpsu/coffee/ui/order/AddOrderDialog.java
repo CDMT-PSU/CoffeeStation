@@ -238,6 +238,7 @@ public final class AddOrderDialog extends JDialog {
 
     private void cancelButtonClicked(ActionEvent event) {
         dispose();
+        
     }
 
     public Result getResult() {
