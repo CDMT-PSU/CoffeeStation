@@ -5,13 +5,17 @@ import cdmtpsu.coffee.ui.ingredient.IngredientPanel;
 import cdmtpsu.coffee.ui.menuitem.MenuItemPanel;
 import cdmtpsu.coffee.ui.order.OrderPanel;
 import cdmtpsu.coffee.ui.user.UserPanel;
+import cdmtpsu.coffee.ui.welcome.WelcomeFrame;
 import cdmtpsu.coffee.util.Refreshable;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public final class MainFrame extends JFrame {
     private final User user;
@@ -41,7 +45,18 @@ public final class MainFrame extends JFrame {
 
         /* this */
         setTitle("CoffeeStation");
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        //setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent event) {
+                int confirmed = showOrderDeletionConfirmationDialog();
+                if (confirmed == JOptionPane.YES_OPTION) {
+                    dispose();
+                    new WelcomeFrame().setVisible(true);
+                }
+            }
+        });
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setContentPane(contentPane);
         pack();
         setLocationRelativeTo(null);
@@ -53,5 +68,11 @@ public final class MainFrame extends JFrame {
 
     public User getUser() {
         return user;
+    }
+
+    private int showOrderDeletionConfirmationDialog() {
+        return JOptionPane.showConfirmDialog(this,
+                "Завершить сеанс работы?", "Подтверждение",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
     }
 }
