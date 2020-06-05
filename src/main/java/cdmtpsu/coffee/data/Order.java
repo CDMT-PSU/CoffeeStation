@@ -6,6 +6,8 @@ import java.util.Objects;
 
 @DatabaseTable(tableName = Order.TABLE_NAME)
 public final class Order {
+    public static final String DATE_PATTERN = "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))";
+
     public static final String TABLE_NAME = "order";
     public static final String USER_FIELD_NAME = "user_id";
     public static final String DATE_FIELD_NAME = "date";

@@ -1,7 +1,8 @@
-package cdmtpsu.coffee.newui.user;
+package cdmtpsu.coffee.ui.ingredient;
 
 import cdmtpsu.coffee.data.Database;
-import cdmtpsu.coffee.data.User;
+import cdmtpsu.coffee.data.Ingredient;
+import cdmtpsu.coffee.util.Refreshable;
 import com.j256.ormlite.dao.Dao;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -17,34 +18,36 @@ import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public final class UserPanel extends JPanel {
+public final class IngredientPanel extends JPanel implements Refreshable {
     private final Window owner;
 
-    private final Dao<User, Integer> dao;
-    private final ArrayList<User> users;
+    private final Dao<Ingredient, Integer> dao;
+    private final ArrayList<Ingredient> ingredients;
     private final TableModel tableModel;
 
     private final JButton addButton;
     private final JButton editButton;
     private final JButton removeButton;
-    private final JButton changePasswordButton;
+    private final JButton decreaseButton;
+    private final JButton increaseButton;
     private final JToolBar toolBar;
     private final JTable table;
     private final JScrollPane scrollPane;
 
-    public UserPanel(Window owner) {
+    public IngredientPanel(Window owner) {
         this.owner = owner;
 
-        dao = Database.getInstance().getUsers();
-        users = new ArrayList<>();
-        tableModel = new TableModel(users);
+        dao = Database.getInstance().getIngredients();
+        ingredients = new ArrayList<>();
+        tableModel = new TableModel(ingredients);
         scrollPane = new JScrollPane();
 
         /* UI */
         addButton = new JButton();
         editButton = new JButton();
         removeButton = new JButton();
-        changePasswordButton = new JButton();
+        decreaseButton = new JButton();
+        increaseButton = new JButton();
         toolBar = new JToolBar();
         table = new JTable();
 
@@ -60,9 +63,13 @@ public final class UserPanel extends JPanel {
         removeButton.setText("Удалить");
         removeButton.addActionListener(this::removeButtonClicked);
 
-        /* changePasswordButton */
-        changePasswordButton.setText("Изменить пароль");
-        changePasswordButton.addActionListener(this::changePasswordButtonClicked);
+        /* decreaseButton */
+        decreaseButton.setText("Уменьшить");
+        decreaseButton.addActionListener(this::decreaseButtonClicked);
+
+        /* increaseButton */
+        increaseButton.setText("Увеличить");
+        increaseButton.addActionListener(this::increaseButtonClicked);
 
         /* toolBar */
         toolBar.setFloatable(false);
@@ -70,7 +77,8 @@ public final class UserPanel extends JPanel {
         toolBar.add(editButton);
         toolBar.add(removeButton);
         toolBar.addSeparator();
-        toolBar.add(changePasswordButton);
+        toolBar.add(decreaseButton);
+        toolBar.add(increaseButton);
 
         /* table */
         table.setModel(tableModel);
@@ -90,9 +98,9 @@ public final class UserPanel extends JPanel {
 
     /* Event handlers */
     private void addButtonClicked(ActionEvent event) {
-        AddUserDialog dialog = new AddUserDialog(owner);
+        AddIngredientDialog dialog = new AddIngredientDialog(owner);
         dialog.setVisible(true);
-        User result = dialog.getResult();
+        Ingredient result = dialog.getResult();
         if (result != null) {
             try {
                 dao.create(result);
@@ -104,14 +112,14 @@ public final class UserPanel extends JPanel {
     }
 
     private void editButtonClicked(ActionEvent event) {
-        User user = getSelectedUser();
-        if (user == null) {
-            showUserNotSelectedMessageDialog();
+        Ingredient ingredient = getSelectedIngredient();
+        if (ingredient == null) {
+            showIngredientNotSelectedMessageDialog();
             return;
         }
-        EditUserDialog dialog = new EditUserDialog(owner, user);
+        EditIngredientDialog dialog = new EditIngredientDialog(owner, ingredient);
         dialog.setVisible(true);
-        User result = dialog.getResult();
+        Ingredient result = dialog.getResult();
         if (result != null) {
             try {
                 dao.update(result);
@@ -123,35 +131,54 @@ public final class UserPanel extends JPanel {
     }
 
     private void removeButtonClicked(ActionEvent event) {
-        User user = getSelectedUser();
-        if (user == null) {
-            showUserNotSelectedMessageDialog();
+        Ingredient ingredient = getSelectedIngredient();
+        if (ingredient == null) {
+            showIngredientNotSelectedMessageDialog();
             return;
         }
-        int confirmed = showUserDeletionConfirmationDialog();
+        int confirmed = showIngredientDeletionConfirmationDialog();
         if (confirmed != JOptionPane.YES_OPTION) {
             return;
         }
         try {
-            dao.delete(user);
+            dao.delete(ingredient);
             refresh();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private void changePasswordButtonClicked(ActionEvent event) {
-        User user = getSelectedUser();
-        if (user == null) {
-            showUserNotSelectedMessageDialog();
+    private void decreaseButtonClicked(ActionEvent event) {
+        Ingredient ingredient = getSelectedIngredient();
+        if (ingredient == null) {
+            showIngredientNotSelectedMessageDialog();
             return;
         }
-        ChangePasswordDialog dialog = new ChangePasswordDialog(owner, user);
+        DecreaseAmountDialog dialog = new DecreaseAmountDialog(owner, ingredient);
         dialog.setVisible(true);
-        User result = dialog.getResult();
+        Ingredient result = dialog.getResult();
         if (result != null) {
             try {
-                dao.update(user);
+                dao.update(result);
+                refresh();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void increaseButtonClicked(ActionEvent event) {
+        Ingredient ingredient = getSelectedIngredient();
+        if (ingredient == null) {
+            showIngredientNotSelectedMessageDialog();
+            return;
+        }
+        IncreaseAmountDialog dialog = new IncreaseAmountDialog(owner, ingredient);
+        dialog.setVisible(true);
+        Ingredient result = dialog.getResult();
+        if (result != null) {
+            try {
+                dao.update(result);
                 refresh();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -161,46 +188,46 @@ public final class UserPanel extends JPanel {
     /**/
 
     /* Logic */
-    private void refresh() {
-        users.clear();
-        dao.forEach(users::add);
+    public void refresh() {
+        ingredients.clear();
+        dao.forEach(ingredients::add);
         tableModel.fireTableDataChanged();
     }
 
-    private User getSelectedUser() {
+    private Ingredient getSelectedIngredient() {
         int selectedRow = table.getSelectedRow();
         if (selectedRow < 0) {
             return null;
         }
-        return users.get(selectedRow);
+        return ingredients.get(selectedRow);
     }
 
-    private void showUserNotSelectedMessageDialog() {
+    private void showIngredientNotSelectedMessageDialog() {
         JOptionPane.showMessageDialog(owner,
-                "Укажите пользователя в таблице.", "Внимание",
+                "Укажите ингредиент в таблице.", "Внимание",
                 JOptionPane.WARNING_MESSAGE);
     }
 
-    private int showUserDeletionConfirmationDialog() {
+    private int showIngredientDeletionConfirmationDialog() {
         return JOptionPane.showConfirmDialog(owner,
-                "Вы действительно хотите удалить указанного пользователя?", "Подтверждение",
+                "Вы действительно хотите удалить указанный ингредиент?", "Подтверждение",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
     }
     /**/
 
     private static final class TableModel extends AbstractTableModel {
-        private static final int COLUMN_COUNT = 4;
-        private static final String[] COLUMN_NAMES = {"Имя пользователя", "Хеш", "ФИО", "Роль"};
+        private static final int COLUMN_COUNT = 3;
+        private static final String[] COLUMN_NAMES = {"Название", "Единицы измерения", "Количество"};
 
-        private final ArrayList<User> users;
+        private final ArrayList<Ingredient> ingredients;
 
-        TableModel(ArrayList<User> users) {
-            this.users = users;
+        TableModel(ArrayList<Ingredient> ingredients) {
+            this.ingredients = ingredients;
         }
 
         @Override
         public int getRowCount() {
-            return users.size();
+            return ingredients.size();
         }
 
         @Override
@@ -215,16 +242,14 @@ public final class UserPanel extends JPanel {
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            User user = users.get(rowIndex);
+            Ingredient ingredient = ingredients.get(rowIndex);
             switch (columnIndex) {
                 case 0:
-                    return user.getUsername();
+                    return ingredient.getName();
                 case 1:
-                    return user.getHash();
+                    return ingredient.getUnit();
                 case 2:
-                    return user.getName();
-                case 3:
-                    return user.getRole();
+                    return ingredient.getAmount();
             }
             return null;
         }

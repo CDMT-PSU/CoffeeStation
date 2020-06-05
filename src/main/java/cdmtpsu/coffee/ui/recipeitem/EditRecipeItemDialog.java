@@ -1,4 +1,4 @@
-package cdmtpsu.coffee.newui.recipeitem;
+package cdmtpsu.coffee.ui.recipeitem;
 
 import cdmtpsu.coffee.data.Database;
 import cdmtpsu.coffee.data.Ingredient;
@@ -20,7 +20,8 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 
-public final class AddRecipeItemDialog extends JDialog {
+public final class EditRecipeItemDialog extends JDialog {
+    private final RecipeItem initial;
     private RecipeItem result;
 
     private final JLabel ingredientLabel;
@@ -32,8 +33,10 @@ public final class AddRecipeItemDialog extends JDialog {
     private final JPanel buttonPanel;
     private final JPanel contentPane;
 
-    public AddRecipeItemDialog(Window owner) {
+    public EditRecipeItemDialog(Window owner, RecipeItem initial) {
         super(owner);
+
+        this.initial = initial;
 
         /* UI */
         ingredientLabel = new JLabel();
@@ -52,6 +55,7 @@ public final class AddRecipeItemDialog extends JDialog {
         ingredientComboBox.setPreferredSize(new Dimension(200, 24));
         Database.getInstance().getIngredients().forEach(ingredientComboBox::addItem);
         ingredientComboBox.setRenderer(new ListCellRenderer());
+        ingredientComboBox.setSelectedItem(initial.getIngredient());
 
         /* amountLabel */
         amountLabel.setText("Количетсво");
@@ -59,6 +63,7 @@ public final class AddRecipeItemDialog extends JDialog {
         /* priceSpinner */
         amountSpinner.setPreferredSize(new Dimension(200, 24));
         amountSpinner.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+        amountSpinner.setValue(initial.getAmount());
 
         /* okButton */
         okButton.setPreferredSize(new Dimension(70, 24));
@@ -86,7 +91,7 @@ public final class AddRecipeItemDialog extends JDialog {
         contentPane.add(buttonPanel);
 
         /* this */
-        setTitle("Добавить позицию рецепта");
+        setTitle("Редактировать позицию рецепта");
         setContentPane(contentPane);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setModal(true);
@@ -98,7 +103,7 @@ public final class AddRecipeItemDialog extends JDialog {
         Ingredient ingredient = (Ingredient) ingredientComboBox.getSelectedItem();
         int amount = (int) amountSpinner.getValue();
 
-        result = new RecipeItem();
+        result = initial;
         result.setIngredient(ingredient);
         result.setAmount(amount);
 

@@ -1,8 +1,9 @@
-package cdmtpsu.coffee.newui.menuitem;
+package cdmtpsu.coffee.ui.menuitem;
 
 import cdmtpsu.coffee.data.Database;
 import cdmtpsu.coffee.data.MenuItem;
 import cdmtpsu.coffee.data.RecipeItem;
+import cdmtpsu.coffee.util.Refreshable;
 import com.j256.ormlite.dao.Dao;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -18,7 +19,7 @@ import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public final class MenuItemPanel extends JPanel {
+public final class MenuItemPanel extends JPanel implements Refreshable {
     private final Window owner;
 
     private final Dao<MenuItem, Integer> dao;
@@ -94,11 +95,11 @@ public final class MenuItemPanel extends JPanel {
                 resultRecipeItems.forEach(recipeItem -> {
                     try {
                         Database.getInstance().getRecipeItems().create(recipeItem);
-                        refresh();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
                 });
+                refresh();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -136,11 +137,11 @@ public final class MenuItemPanel extends JPanel {
                 resultRecipeItems.forEach(recipeItem -> {
                     try {
                         dao1.create(recipeItem);
-                        refresh();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
                 });
+                refresh();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -167,7 +168,7 @@ public final class MenuItemPanel extends JPanel {
     /**/
 
     /* Logic */
-    private void refresh() {
+    public void refresh() {
         menuItems.clear();
         dao.forEach(menuItems::add);
         tableModel.fireTableDataChanged();

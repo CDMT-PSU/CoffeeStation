@@ -1,11 +1,10 @@
 package cdmtpsu.coffee;
 
 import cdmtpsu.coffee.data.Database;
-import cdmtpsu.coffee.newui.MainFrame;
-import com.alee.laf.WebLookAndFeel;
+import cdmtpsu.coffee.ui.order.SendMessageDialog;
+import cdmtpsu.coffee.ui.welcome.WelcomeFrame;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.UIManager;
 import java.awt.Image;
 import java.io.IOException;
@@ -50,9 +49,7 @@ public class Main {
         UIManager.put("OptionPane.cancelButtonText", "Отмена");
 
         try {
-            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            JFrame.setDefaultLookAndFeelDecorated(true);
-            WebLookAndFeel.install();
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ignored) {
         }
         Database.getInstance(); // init
@@ -61,11 +58,11 @@ public class Main {
             User user = Database.getInstance().getUsers().queryBuilder()
                     .where().eq(User.USERNAME_FIELD_NAME, "admin")
                     .queryForFirst();
-            new MainWindow(user).create();
+            new MainFrame(user).setVisible(true);
         } catch (SQLException e) {
             e.printStackTrace();
         }*/
 
-        new MainFrame().setVisible(true);
+        new WelcomeFrame().setVisible(true);
     }
 }

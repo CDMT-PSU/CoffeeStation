@@ -1,49 +1,43 @@
-package cdmtpsu.coffee.newui.ingredient;
+package cdmtpsu.coffee.ui.order;
 
-import cdmtpsu.coffee.data.Ingredient;
 import cdmtpsu.coffee.util.CenterLayout;
+import cdmtpsu.coffee.util.SwingUtils;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.JTextField;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 
-public final class DecreaseAmountDialog extends JDialog {
-    private final Ingredient initial;
-    private Ingredient result;
-
-    private final JLabel amountLabel;
-    private final JSpinner amountSpinner;
+public final class SendMessageDialog extends JDialog {
+    private final JLabel addressLabel;
+    private final JTextField addressTextField;
     private final JButton okButton;
     private final JButton cancelButton;
     private final JPanel buttonPanel;
     private final JPanel contentPane;
 
-    public DecreaseAmountDialog(Window owner, Ingredient initial) {
+    public SendMessageDialog(Window owner) {
         super(owner);
 
-        this.initial = initial;
-
         /* UI */
-        amountLabel = new JLabel();
-        amountSpinner = new JSpinner();
+        addressLabel = new JLabel();
+        addressTextField = new JTextField();
         okButton = new JButton();
         cancelButton = new JButton();
         buttonPanel = new JPanel();
         contentPane = new JPanel();
 
-        /* amountLabel */
-        amountLabel.setText("Уменшить количество на");
+        /* addressLabel */
+        addressLabel.setText("Адрес почтового ящика");
 
-        /* amountSpinner */
-        amountSpinner.setPreferredSize(new Dimension(200, 24));
-        amountSpinner.setModel(new SpinnerNumberModel(0, 0, initial.getAmount(), 1));
+        /* addressTextField */
+        addressTextField.setPreferredSize(new Dimension(200, 24));
+        SwingUtils.onValueChanged(addressTextField, this::fieldValueChanged);
 
         /* okButton */
         okButton.setPreferredSize(new Dimension(70, 24));
@@ -62,34 +56,34 @@ public final class DecreaseAmountDialog extends JDialog {
         /* contentPane */
         contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         contentPane.setLayout(new CenterLayout());
-        contentPane.add(amountLabel);
-        contentPane.add(amountSpinner);
+        contentPane.add(addressLabel);
+        contentPane.add(addressTextField);
         contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
         contentPane.add(buttonPanel);
 
         /* this */
-        setTitle("Уменьшить количество");
+        setTitle("Сообщить администратору");
         setContentPane(contentPane);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setModal(true);
         pack();
         setLocationRelativeTo(owner);
+
+        fieldValueChanged();
+    }
+
+    private void fieldValueChanged() {
+        String address = addressTextField.getText();
+
+        okButton.setEnabled(address.length() > 0);
     }
 
     private void okButtonClicked(ActionEvent event) {
-        int amount = (int) amountSpinner.getValue();
-
-        result = initial;
-        result.setAmount(initial.getAmount() - amount);
-
+        /* Ничего не делаем :3 */
         dispose();
     }
 
     private void cancelButtonClicked(ActionEvent event) {
         dispose();
-    }
-
-    public Ingredient getResult() {
-        return result;
     }
 }

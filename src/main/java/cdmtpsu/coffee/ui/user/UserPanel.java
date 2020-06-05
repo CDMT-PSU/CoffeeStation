@@ -1,7 +1,9 @@
-package cdmtpsu.coffee.newui.ingredient;
+package cdmtpsu.coffee.ui.user;
 
 import cdmtpsu.coffee.data.Database;
-import cdmtpsu.coffee.data.Ingredient;
+import cdmtpsu.coffee.data.User;
+import cdmtpsu.coffee.ui.main.MainFrame;
+import cdmtpsu.coffee.util.Refreshable;
 import com.j256.ormlite.dao.Dao;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -17,36 +19,34 @@ import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public final class IngredientPanel extends JPanel {
+public final class UserPanel extends JPanel implements Refreshable {
     private final Window owner;
 
-    private final Dao<Ingredient, Integer> dao;
-    private final ArrayList<Ingredient> ingredients;
+    private final Dao<User, Integer> dao;
+    private final ArrayList<User> users;
     private final TableModel tableModel;
 
     private final JButton addButton;
     private final JButton editButton;
     private final JButton removeButton;
-    private final JButton decreaseButton;
-    private final JButton increaseButton;
+    private final JButton changePasswordButton;
     private final JToolBar toolBar;
     private final JTable table;
     private final JScrollPane scrollPane;
 
-    public IngredientPanel(Window owner) {
+    public UserPanel(Window owner) {
         this.owner = owner;
 
-        dao = Database.getInstance().getIngredients();
-        ingredients = new ArrayList<>();
-        tableModel = new TableModel(ingredients);
+        dao = Database.getInstance().getUsers();
+        users = new ArrayList<>();
+        tableModel = new TableModel(users);
         scrollPane = new JScrollPane();
 
         /* UI */
         addButton = new JButton();
         editButton = new JButton();
         removeButton = new JButton();
-        decreaseButton = new JButton();
-        increaseButton = new JButton();
+        changePasswordButton = new JButton();
         toolBar = new JToolBar();
         table = new JTable();
 
@@ -62,13 +62,9 @@ public final class IngredientPanel extends JPanel {
         removeButton.setText("Удалить");
         removeButton.addActionListener(this::removeButtonClicked);
 
-        /* decreaseButton */
-        decreaseButton.setText("Уменьшить");
-        decreaseButton.addActionListener(this::decreaseButtonClicked);
-
-        /* increaseButton */
-        increaseButton.setText("Увеличить");
-        increaseButton.addActionListener(this::increaseButtonClicked);
+        /* changePasswordButton */
+        changePasswordButton.setText("Изменить пароль");
+        changePasswordButton.addActionListener(this::changePasswordButtonClicked);
 
         /* toolBar */
         toolBar.setFloatable(false);
@@ -76,8 +72,7 @@ public final class IngredientPanel extends JPanel {
         toolBar.add(editButton);
         toolBar.add(removeButton);
         toolBar.addSeparator();
-        toolBar.add(decreaseButton);
-        toolBar.add(increaseButton);
+        toolBar.add(changePasswordButton);
 
         /* table */
         table.setModel(tableModel);
@@ -97,9 +92,9 @@ public final class IngredientPanel extends JPanel {
 
     /* Event handlers */
     private void addButtonClicked(ActionEvent event) {
-        AddIngredientDialog dialog = new AddIngredientDialog(owner);
+        AddUserDialog dialog = new AddUserDialog(owner);
         dialog.setVisible(true);
-        Ingredient result = dialog.getResult();
+        User result = dialog.getResult();
         if (result != null) {
             try {
                 dao.create(result);
@@ -111,14 +106,14 @@ public final class IngredientPanel extends JPanel {
     }
 
     private void editButtonClicked(ActionEvent event) {
-        Ingredient ingredient = getSelectedIngredient();
-        if (ingredient == null) {
-            showIngredientNotSelectedMessageDialog();
+        User user = getSelectedUser();
+        if (user == null) {
+            showUserNotSelectedMessageDialog();
             return;
         }
-        EditIngredientDialog dialog = new EditIngredientDialog(owner, ingredient);
+        EditUserDialog dialog = new EditUserDialog(owner, user);
         dialog.setVisible(true);
-        Ingredient result = dialog.getResult();
+        User result = dialog.getResult();
         if (result != null) {
             try {
                 dao.update(result);
@@ -130,54 +125,43 @@ public final class IngredientPanel extends JPanel {
     }
 
     private void removeButtonClicked(ActionEvent event) {
-        Ingredient ingredient = getSelectedIngredient();
-        if (ingredient == null) {
-            showIngredientNotSelectedMessageDialog();
+        User user = getSelectedUser();
+        if (user == null) {
+            showUserNotSelectedMessageDialog();
             return;
         }
-        int confirmed = showIngredientDeletionConfirmationDialog();
+
+        /* Не даем удалить самого себя! */
+        User sessionUser = ((MainFrame) owner).getUser();
+        if (user.equals(sessionUser)) {
+            showSelfDeletionMessageDialog();
+            return;
+        }
+
+        int confirmed = showUserDeletionConfirmationDialog();
         if (confirmed != JOptionPane.YES_OPTION) {
             return;
         }
         try {
-            dao.delete(ingredient);
+            dao.delete(user);
             refresh();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private void decreaseButtonClicked(ActionEvent event) {
-        Ingredient ingredient = getSelectedIngredient();
-        if (ingredient == null) {
-            showIngredientNotSelectedMessageDialog();
+    private void changePasswordButtonClicked(ActionEvent event) {
+        User user = getSelectedUser();
+        if (user == null) {
+            showUserNotSelectedMessageDialog();
             return;
         }
-        DecreaseAmountDialog dialog = new DecreaseAmountDialog(owner, ingredient);
+        ChangePasswordDialog dialog = new ChangePasswordDialog(owner, user);
         dialog.setVisible(true);
-        Ingredient result = dialog.getResult();
+        User result = dialog.getResult();
         if (result != null) {
             try {
-                dao.update(result);
-                refresh();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void increaseButtonClicked(ActionEvent event) {
-        Ingredient ingredient = getSelectedIngredient();
-        if (ingredient == null) {
-            showIngredientNotSelectedMessageDialog();
-            return;
-        }
-        IncreaseAmountDialog dialog = new IncreaseAmountDialog(owner, ingredient);
-        dialog.setVisible(true);
-        Ingredient result = dialog.getResult();
-        if (result != null) {
-            try {
-                dao.update(result);
+                dao.update(user);
                 refresh();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -187,46 +171,52 @@ public final class IngredientPanel extends JPanel {
     /**/
 
     /* Logic */
-    private void refresh() {
-        ingredients.clear();
-        dao.forEach(ingredients::add);
+    public void refresh() {
+        users.clear();
+        dao.forEach(users::add);
         tableModel.fireTableDataChanged();
     }
 
-    private Ingredient getSelectedIngredient() {
+    private User getSelectedUser() {
         int selectedRow = table.getSelectedRow();
         if (selectedRow < 0) {
             return null;
         }
-        return ingredients.get(selectedRow);
+        return users.get(selectedRow);
     }
 
-    private void showIngredientNotSelectedMessageDialog() {
+    private void showUserNotSelectedMessageDialog() {
         JOptionPane.showMessageDialog(owner,
-                "Укажите ингредиент в таблице.", "Внимание",
+                "Укажите пользователя в таблице.", "Внимание",
                 JOptionPane.WARNING_MESSAGE);
     }
 
-    private int showIngredientDeletionConfirmationDialog() {
+    private void showSelfDeletionMessageDialog() {
+        JOptionPane.showMessageDialog(owner,
+                "Вы не можете удалить самого себя.", "Внимание",
+                JOptionPane.WARNING_MESSAGE);
+    }
+
+    private int showUserDeletionConfirmationDialog() {
         return JOptionPane.showConfirmDialog(owner,
-                "Вы действительно хотите удалить указанный ингредиент?", "Подтверждение",
+                "Вы действительно хотите удалить указанного пользователя?", "Подтверждение",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
     }
     /**/
 
     private static final class TableModel extends AbstractTableModel {
-        private static final int COLUMN_COUNT = 3;
-        private static final String[] COLUMN_NAMES = {"Название", "Единицы измерения", "Количество"};
+        private static final int COLUMN_COUNT = 4;
+        private static final String[] COLUMN_NAMES = {"Имя пользователя", "Хеш", "ФИО", "Роль"};
 
-        private final ArrayList<Ingredient> ingredients;
+        private final ArrayList<User> users;
 
-        TableModel(ArrayList<Ingredient> ingredients) {
-            this.ingredients = ingredients;
+        TableModel(ArrayList<User> users) {
+            this.users = users;
         }
 
         @Override
         public int getRowCount() {
-            return ingredients.size();
+            return users.size();
         }
 
         @Override
@@ -241,14 +231,16 @@ public final class IngredientPanel extends JPanel {
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            Ingredient ingredient = ingredients.get(rowIndex);
+            User user = users.get(rowIndex);
             switch (columnIndex) {
                 case 0:
-                    return ingredient.getName();
+                    return user.getUsername();
                 case 1:
-                    return ingredient.getUnit();
+                    return user.getHash();
                 case 2:
-                    return ingredient.getAmount();
+                    return user.getName();
+                case 3:
+                    return user.getRole();
             }
             return null;
         }

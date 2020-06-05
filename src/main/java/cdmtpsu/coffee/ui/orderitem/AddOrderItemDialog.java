@@ -1,28 +1,30 @@
-package cdmtpsu.coffee.newui.ingredient;
+package cdmtpsu.coffee.ui.orderitem;
 
-import cdmtpsu.coffee.data.Ingredient;
+import cdmtpsu.coffee.data.Database;
+import cdmtpsu.coffee.data.MenuItem;
+import cdmtpsu.coffee.data.OrderItem;
 import cdmtpsu.coffee.util.CenterLayout;
-import cdmtpsu.coffee.util.SwingUtils;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 
-public final class AddIngredientDialog extends JDialog {
-    private Ingredient result;
+public final class AddOrderItemDialog extends JDialog {
+    private OrderItem result;
 
-    private final JLabel nameLabel;
-    private final JTextField nameTextField;
-    private final JLabel unitLabel;
-    private final JTextField unitTextField;
+    private final JLabel menuItemLabel;
+    private final JComboBox<MenuItem> menuItemComboBox;
     private final JLabel amountLabel;
     private final JSpinner amountSpinner;
     private final JButton okButton;
@@ -30,14 +32,12 @@ public final class AddIngredientDialog extends JDialog {
     private final JPanel buttonPanel;
     private final JPanel contentPane;
 
-    public AddIngredientDialog(Window owner) {
+    public AddOrderItemDialog(Window owner) {
         super(owner);
 
         /* UI */
-        nameLabel = new JLabel();
-        nameTextField = new JTextField();
-        unitLabel = new JLabel();
-        unitTextField = new JTextField();
+        menuItemLabel = new JLabel();
+        menuItemComboBox = new JComboBox<>();
         amountLabel = new JLabel();
         amountSpinner = new JSpinner();
         okButton = new JButton();
@@ -45,24 +45,18 @@ public final class AddIngredientDialog extends JDialog {
         buttonPanel = new JPanel();
         contentPane = new JPanel();
 
-        /* nameLabel */
-        nameLabel.setText("Название");
+        /* ingredientLabel */
+        menuItemLabel.setText("Позиция меню");
 
-        /* nameTextField */
-        nameTextField.setPreferredSize(new Dimension(200, 24));
-        SwingUtils.onValueChanged(nameTextField, this::fieldValueChanged);
-
-        /* unitLabel */
-        unitLabel.setText("Единицы измерения");
-
-        /* unitTextField */
-        unitTextField.setPreferredSize(new Dimension(200, 24));
-        SwingUtils.onValueChanged(unitTextField, this::fieldValueChanged);
+        /* ingredientComboBox */
+        menuItemComboBox.setPreferredSize(new Dimension(200, 24));
+        Database.getInstance().getMenuItems().forEach(menuItemComboBox::addItem);
+        menuItemComboBox.setRenderer(new ListCellRenderer());
 
         /* amountLabel */
-        amountLabel.setText("Количество");
+        amountLabel.setText("Количетсво");
 
-        /* amountSpinner */
+        /* priceSpinner */
         amountSpinner.setPreferredSize(new Dimension(200, 24));
         amountSpinner.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
 
@@ -83,11 +77,8 @@ public final class AddIngredientDialog extends JDialog {
         /* contentPane */
         contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         contentPane.setLayout(new CenterLayout());
-        contentPane.add(nameLabel);
-        contentPane.add(nameTextField);
-        contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
-        contentPane.add(unitLabel);
-        contentPane.add(unitTextField);
+        contentPane.add(menuItemLabel);
+        contentPane.add(menuItemComboBox);
         contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
         contentPane.add(amountLabel);
         contentPane.add(amountSpinner);
@@ -95,31 +86,20 @@ public final class AddIngredientDialog extends JDialog {
         contentPane.add(buttonPanel);
 
         /* this */
-        setTitle("Добавить ингредиент");
+        setTitle("Добавить позицию заказа");
         setContentPane(contentPane);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setModal(true);
         pack();
         setLocationRelativeTo(owner);
-
-        fieldValueChanged();
-    }
-
-    private void fieldValueChanged() {
-        String name = nameTextField.getText();
-        String unit = unitTextField.getText();
-
-        okButton.setEnabled(name.length() > 0 && unit.length() > 0);
     }
 
     private void okButtonClicked(ActionEvent event) {
-        String name = nameTextField.getText();
-        String unit = unitTextField.getText();
+        MenuItem menuItem = (MenuItem) menuItemComboBox.getSelectedItem();
         int amount = (int) amountSpinner.getValue();
 
-        result = new Ingredient();
-        result.setName(name);
-        result.setUnit(unit);
+        result = new OrderItem();
+        result.setMenuItem(menuItem);
         result.setAmount(amount);
 
         dispose();
@@ -129,7 +109,27 @@ public final class AddIngredientDialog extends JDialog {
         dispose();
     }
 
-    public Ingredient getResult() {
+    public OrderItem getResult() {
         return result;
+    }
+
+
+
+    public static final class ListCellRenderer extends DefaultListCellRenderer {
+        ListCellRenderer() {
+        }
+
+        @Override
+        public Component getListCellRendererComponent(JList<?> list,
+                                                      Object value,
+                                                      int index,
+                                                      boolean isSelected,
+                                                      boolean cellHasFocus) {
+            if (value instanceof MenuItem) {
+                MenuItem menuItem = (MenuItem) value;
+                value = menuItem.getName() + ", " + menuItem.getPrice() + " руб.";
+            }
+            return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        }
     }
 }

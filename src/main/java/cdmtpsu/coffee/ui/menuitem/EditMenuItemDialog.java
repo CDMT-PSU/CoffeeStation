@@ -1,8 +1,9 @@
-package cdmtpsu.coffee.newui.menuitem;
+package cdmtpsu.coffee.ui.menuitem;
 
+import cdmtpsu.coffee.data.Database;
 import cdmtpsu.coffee.data.MenuItem;
 import cdmtpsu.coffee.data.RecipeItem;
-import cdmtpsu.coffee.newui.recipeitem.RecipeItemPanel;
+import cdmtpsu.coffee.ui.recipeitem.RecipeItemPanel;
 import cdmtpsu.coffee.util.CenterLayout;
 import cdmtpsu.coffee.util.SwingUtils;
 import javax.swing.BorderFactory;
@@ -17,9 +18,11 @@ import javax.swing.SpinnerNumberModel;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
-public final class AddMenuItemDialog extends JDialog {
+public final class EditMenuItemDialog extends JDialog {
+    private final MenuItem initial;
     private Result result;
 
     private final JLabel nameLabel;
@@ -35,8 +38,10 @@ public final class AddMenuItemDialog extends JDialog {
     private final JPanel buttonPanel;
     private final JPanel contentPane;
 
-    public AddMenuItemDialog(Window owner) {
+    public EditMenuItemDialog(Window owner, MenuItem initial) {
         super(owner);
+
+        this.initial = initial;
 
         /* UI */
         nameLabel = new JLabel();
@@ -58,6 +63,7 @@ public final class AddMenuItemDialog extends JDialog {
         /* nameTextField */
         nameTextField.setPreferredSize(new Dimension(200, 24));
         SwingUtils.onValueChanged(nameTextField, this::fieldValueChanged);
+        nameTextField.setText(initial.getName());
 
         /* namePanel */
         namePanel.setLayout(new CenterLayout());
@@ -70,6 +76,7 @@ public final class AddMenuItemDialog extends JDialog {
         /* priceSpinner */
         priceSpinner.setPreferredSize(new Dimension(200, 24));
         priceSpinner.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+        priceSpinner.setValue(initial.getPrice());
 
         /* pricePanel */
         pricePanel.setLayout(new CenterLayout());
@@ -82,6 +89,16 @@ public final class AddMenuItemDialog extends JDialog {
 
         /* recipeItemPanel */
         recipeItemPanel.setPreferredSize(new Dimension(500, 300));
+        try {
+            Database.getInstance().getRecipeItems().queryBuilder()
+                    .where()
+                    .eq(RecipeItem.MENU_ITEM_FIELD_NAME, initial.getId())
+                    .query()
+                    .forEach(it -> recipeItemPanel.getRecipeItems().add(it));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        // TODO: ПРОВЕРИТЬ ЕСТЬ ЛИ РЕФРЕШ!!!
 
         /* okButton */
         okButton.setPreferredSize(new Dimension(70, 24));
@@ -107,7 +124,7 @@ public final class AddMenuItemDialog extends JDialog {
         contentPane.add(buttonPanel);
 
         /* this */
-        setTitle("Добавить позицию меню");
+        setTitle("Редактировать позицию меню");
         setContentPane(contentPane);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setModal(true);
@@ -127,13 +144,15 @@ public final class AddMenuItemDialog extends JDialog {
         String name = nameTextField.getText();
         int price = (int) priceSpinner.getValue();
 
-        MenuItem menuItem = new MenuItem();
+        MenuItem menuItem = initial;
         menuItem.setName(name);
         menuItem.setPrice(price);
 
         ArrayList<RecipeItem> recipeItems = recipeItemPanel.getRecipeItems();
         for (RecipeItem recipeItem : recipeItems) {
-            recipeItem.setMenuItem(menuItem);
+            if (recipeItem.getMenuItem() == null) {
+                recipeItem.setMenuItem(menuItem);
+            }
         }
 
         result = new Result(menuItem, recipeItems);

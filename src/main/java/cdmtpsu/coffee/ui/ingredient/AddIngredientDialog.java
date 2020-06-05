@@ -1,4 +1,4 @@
-package cdmtpsu.coffee.newui.ingredient;
+package cdmtpsu.coffee.ui.ingredient;
 
 import cdmtpsu.coffee.data.Ingredient;
 import cdmtpsu.coffee.util.CenterLayout;
@@ -16,8 +16,7 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 
-public final class EditIngredientDialog extends JDialog {
-    private final Ingredient initial;
+public final class AddIngredientDialog extends JDialog {
     private Ingredient result;
 
     private final JLabel nameLabel;
@@ -31,10 +30,8 @@ public final class EditIngredientDialog extends JDialog {
     private final JPanel buttonPanel;
     private final JPanel contentPane;
 
-    public EditIngredientDialog(Window owner, Ingredient initial) {
+    public AddIngredientDialog(Window owner) {
         super(owner);
-
-        this.initial = initial;
 
         /* UI */
         nameLabel = new JLabel();
@@ -54,7 +51,6 @@ public final class EditIngredientDialog extends JDialog {
         /* nameTextField */
         nameTextField.setPreferredSize(new Dimension(200, 24));
         SwingUtils.onValueChanged(nameTextField, this::fieldValueChanged);
-        nameTextField.setText(initial.getName());
 
         /* unitLabel */
         unitLabel.setText("Единицы измерения");
@@ -62,7 +58,6 @@ public final class EditIngredientDialog extends JDialog {
         /* unitTextField */
         unitTextField.setPreferredSize(new Dimension(200, 24));
         SwingUtils.onValueChanged(unitTextField, this::fieldValueChanged);
-        unitTextField.setText(initial.getUnit());
 
         /* amountLabel */
         amountLabel.setText("Количество");
@@ -70,7 +65,6 @@ public final class EditIngredientDialog extends JDialog {
         /* amountSpinner */
         amountSpinner.setPreferredSize(new Dimension(200, 24));
         amountSpinner.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
-        amountSpinner.setValue(initial.getAmount());
 
         /* okButton */
         okButton.setPreferredSize(new Dimension(70, 24));
@@ -101,7 +95,7 @@ public final class EditIngredientDialog extends JDialog {
         contentPane.add(buttonPanel);
 
         /* this */
-        setTitle("Редактировать ингредиент");
+        setTitle("Добавить ингредиент");
         setContentPane(contentPane);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setModal(true);
@@ -123,7 +117,7 @@ public final class EditIngredientDialog extends JDialog {
         String unit = unitTextField.getText();
         int amount = (int) amountSpinner.getValue();
 
-        result = initial;
+        result = new Ingredient();
         result.setName(name);
         result.setUnit(unit);
         result.setAmount(amount);

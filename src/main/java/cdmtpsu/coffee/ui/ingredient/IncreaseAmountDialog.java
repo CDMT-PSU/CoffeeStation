@@ -1,50 +1,49 @@
-package cdmtpsu.coffee.newui.user;
+package cdmtpsu.coffee.ui.ingredient;
 
-import cdmtpsu.coffee.data.Database;
-import cdmtpsu.coffee.data.User;
+import cdmtpsu.coffee.data.Ingredient;
 import cdmtpsu.coffee.util.CenterLayout;
-import cdmtpsu.coffee.util.SwingUtils;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 
-public final class ChangePasswordDialog extends JDialog {
-    private final User initial;
-    private User result;
+public final class IncreaseAmountDialog extends JDialog {
+    private final Ingredient initial;
+    private Ingredient result;
 
-    private final JLabel passwordLabel;
-    private final JPasswordField passwordField;
+    private final JLabel amountLabel;
+    private final JSpinner amountSpinner;
     private final JButton okButton;
     private final JButton cancelButton;
     private final JPanel buttonPanel;
     private final JPanel contentPane;
 
-    public ChangePasswordDialog(Window owner, User initial) {
+    public IncreaseAmountDialog(Window owner, Ingredient initial) {
         super(owner);
 
         this.initial = initial;
 
         /* UI */
-        passwordLabel = new JLabel();
-        passwordField = new JPasswordField();
+        amountLabel = new JLabel();
+        amountSpinner = new JSpinner();
         okButton = new JButton();
         cancelButton = new JButton();
         buttonPanel = new JPanel();
         contentPane = new JPanel();
 
-        /* passwordLabel */
-        passwordLabel.setText("Пароль");
+        /* amountLabel */
+        amountLabel.setText("Увеличить количество на");
 
-        /* passwordField */
-        passwordField.setPreferredSize(new Dimension(200, 24));
-        SwingUtils.onValueChanged(passwordField, this::fieldValueChanged);
+        /* amountSpinner */
+        amountSpinner.setPreferredSize(new Dimension(200, 24));
+        amountSpinner.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE - initial.getAmount(), 1));
 
         /* okButton */
         okButton.setPreferredSize(new Dimension(70, 24));
@@ -63,33 +62,25 @@ public final class ChangePasswordDialog extends JDialog {
         /* contentPane */
         contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         contentPane.setLayout(new CenterLayout());
-        contentPane.add(passwordLabel);
-        contentPane.add(passwordField);
+        contentPane.add(amountLabel);
+        contentPane.add(amountSpinner);
         contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
         contentPane.add(buttonPanel);
 
         /* this */
-        setTitle("Изменить пароль");
+        setTitle("Увеличить количество");
         setContentPane(contentPane);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setModal(true);
         pack();
         setLocationRelativeTo(owner);
-
-        fieldValueChanged();
-    }
-
-    private void fieldValueChanged() {
-        String password = passwordField.getText();
-
-        okButton.setEnabled(password.matches(User.PASSWORD_PATTERN));
     }
 
     private void okButtonClicked(ActionEvent event) {
-        String hash = Database.hashPassword(passwordField.getText());
+        int amount = (int) amountSpinner.getValue();
 
         result = initial;
-        result.setHash(hash);
+        result.setAmount(initial.getAmount() + amount);
 
         dispose();
     }
@@ -98,7 +89,7 @@ public final class ChangePasswordDialog extends JDialog {
         dispose();
     }
 
-    public User getResult() {
+    public Ingredient getResult() {
         return result;
     }
 }

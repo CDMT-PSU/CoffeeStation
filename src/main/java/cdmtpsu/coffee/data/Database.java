@@ -3,7 +3,6 @@ package cdmtpsu.coffee.data;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.table.TableUtils;
 
 import java.nio.charset.StandardCharsets;
@@ -11,7 +10,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -64,6 +65,10 @@ public final class Database {
         return Objects.equals(hashPassword(salt, password), hash);
     }
 
+    public static String getCurrentDate() {
+        return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    }
+
     private final JdbcConnectionSource connectionSource;
     /* dao */
     private final Dao<Ingredient, Integer> ingredients;
@@ -93,10 +98,11 @@ public final class Database {
             /* crutch */
             users.executeRawNoArgs("PRAGMA foreign_keys = ON");
             /* add admin if it doesn't exist */
-            if (!usernameExist("admin")) {
+            if (!usernameExists("admin")) {
                 User user = new User();
                 user.setUsername("admin");
                 user.setHash(Database.hashPassword("1234"));
+                user.setName("Иванов Иван Иванович");
                 user.setRole(User.Role.ADMINISTRATOR);
                 users.create(user);
             }
@@ -130,7 +136,7 @@ public final class Database {
         return users;
     }
 
-    public boolean usernameExist(String username) {
+    public boolean usernameExists(String username) {
         try {
             return getUsers().queryBuilder().where().eq(User.USERNAME_FIELD_NAME, username).countOf() > 0;
         } catch (SQLException e) {

@@ -1,11 +1,9 @@
-package cdmtpsu.coffee.newui.orderitem;
+package cdmtpsu.coffee.ui.recipeitem;
 
 import cdmtpsu.coffee.data.Database;
 import cdmtpsu.coffee.data.Ingredient;
-import cdmtpsu.coffee.data.Order;
-import cdmtpsu.coffee.data.OrderItem;
 import cdmtpsu.coffee.data.RecipeItem;
-import com.j256.ormlite.dao.Dao;
+import cdmtpsu.coffee.util.Refreshable;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -17,13 +15,13 @@ import javax.swing.table.AbstractTableModel;
 import java.awt.BorderLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
-public final class OrderItemPanel extends JPanel {
+public final class RecipeItemPanel extends JPanel implements Refreshable {
     private final Window owner;
 
-    private final Dao<OrderItem, Integer> dao;
-    private final ArrayList<OrderItem> orderItems;
+    private final ArrayList<RecipeItem> recipeItems;
     private final TableModel tableModel;
 
     private final JButton addButton;
@@ -33,12 +31,11 @@ public final class OrderItemPanel extends JPanel {
     private final JTable table;
     private final JScrollPane scrollPane;
 
-    public OrderItemPanel(Window owner) {
+    public RecipeItemPanel(Window owner) {
         this.owner = owner;
 
-        dao = Database.getInstance().getOrderItems();
-        orderItems = new ArrayList<>();
-        tableModel = new TableModel(orderItems);
+        recipeItems = new ArrayList<>();
+        tableModel = new TableModel(recipeItems);
         scrollPane = new JScrollPane();
 
         /* UI */
@@ -84,17 +81,27 @@ public final class OrderItemPanel extends JPanel {
 
     /* Event handlers */
     private void addButtonClicked(ActionEvent event) {
-        /*AddRecipeItemDialog dialog = new AddRecipeItemDialog(owner);
+        /* Проверяем есть ли у нас хотя бы один ингредиент. */
+        try {
+            if (Database.getInstance().getIngredients().countOf() == 0) {
+                showNoIngredientsMessageDialog();
+                return;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        AddRecipeItemDialog dialog = new AddRecipeItemDialog(owner);
         dialog.setVisible(true);
         RecipeItem result = dialog.getResult();
         if (result != null) {
             recipeItems.add(result);
             refresh();
-        }*/
+        }
     }
 
     private void editButtonClicked(ActionEvent event) {
-        /*RecipeItem recipeItem = getSelectedRecipeItem();
+        RecipeItem recipeItem = getSelectedRecipeItem();
         if (recipeItem == null) {
             showRecipeItemNotSelectedMessageDialog();
             return;
@@ -104,53 +111,63 @@ public final class OrderItemPanel extends JPanel {
         RecipeItem result = dialog.getResult();
         if (result != null) {
             refresh();
-        }*/
+        }
     }
 
     private void removeButtonClicked(ActionEvent event) {
-        /*RecipeItem recipeItem = getSelectedRecipeItem();
+        RecipeItem recipeItem = getSelectedRecipeItem();
         if (recipeItem == null) {
             showRecipeItemNotSelectedMessageDialog();
             return;
         }
+        int confirmed = showRecipeItemDeletionConfirmationDialog();
+        if (confirmed != JOptionPane.YES_OPTION) {
+            return;
+        }
         recipeItems.remove(recipeItem);
-        refresh();*/
+        refresh();
     }
     /**/
 
     /* Logic */
-    public ArrayList<OrderItem>getOrderItems() {
-        return orderItems;
+    public ArrayList<RecipeItem> getRecipeItems() {
+        return recipeItems;
     }
 
-    private void refresh() {
+    public void refresh() {
         tableModel.fireTableDataChanged();
     }
 
-    private OrderItem getSelectedOrderItem() {
+    private RecipeItem getSelectedRecipeItem() {
         int selectedRow = table.getSelectedRow();
         if (selectedRow < 0) {
             return null;
         }
-        return orderItems.get(selectedRow);
+        return recipeItems.get(selectedRow);
     }
 
-    private void showOrderItemNotSelectedMessageDialog() {
+    private void showRecipeItemNotSelectedMessageDialog() {
         JOptionPane.showMessageDialog(owner,
-                "Укажите позицию заказа в таблице.", "Внимание",
+                "Укажите позицию рецепта в таблице.", "Внимание",
+                JOptionPane.WARNING_MESSAGE);
+    }
+
+    private void showNoIngredientsMessageDialog() {
+        JOptionPane.showMessageDialog(owner,
+                "Вы не добавили ни одного ингредиента.\nПерейдите во вкладку 'Ингредиенты'.", "Внимание",
                 JOptionPane.WARNING_MESSAGE);
     }
 
     private int showRecipeItemDeletionConfirmationDialog() {
         return JOptionPane.showConfirmDialog(owner,
-                "Вы действительно хотите удалить указанную позицию заказа?", "Подтверждение",
+                "Вы действительно хотите удалить указанную позицию рецепта?", "Подтверждение",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
     }
     /**/
 
     private static final class TableModel extends AbstractTableModel {
         private static final int COLUMN_COUNT = 2;
-        private static final String[] COLUMN_NAMES = {"Позиция меню", "Количество"};
+        private static final String[] COLUMN_NAMES = {"Ингредиент", "Количество"};
 
         private final ArrayList<RecipeItem> recipeItems;
 

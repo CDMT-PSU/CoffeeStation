@@ -1,4 +1,4 @@
-package cdmtpsu.coffee.newui.ingredient;
+package cdmtpsu.coffee.ui.ingredient;
 
 import cdmtpsu.coffee.data.Ingredient;
 import cdmtpsu.coffee.util.CenterLayout;
@@ -14,7 +14,7 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 
-public final class IncreaseAmountDialog extends JDialog {
+public final class DecreaseAmountDialog extends JDialog {
     private final Ingredient initial;
     private Ingredient result;
 
@@ -25,7 +25,7 @@ public final class IncreaseAmountDialog extends JDialog {
     private final JPanel buttonPanel;
     private final JPanel contentPane;
 
-    public IncreaseAmountDialog(Window owner, Ingredient initial) {
+    public DecreaseAmountDialog(Window owner, Ingredient initial) {
         super(owner);
 
         this.initial = initial;
@@ -39,11 +39,11 @@ public final class IncreaseAmountDialog extends JDialog {
         contentPane = new JPanel();
 
         /* amountLabel */
-        amountLabel.setText("Увеличить количество на");
+        amountLabel.setText("Уменшить количество на");
 
         /* amountSpinner */
         amountSpinner.setPreferredSize(new Dimension(200, 24));
-        amountSpinner.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE - initial.getAmount(), 1));
+        amountSpinner.setModel(new SpinnerNumberModel(0, 0, initial.getAmount(), 1));
 
         /* okButton */
         okButton.setPreferredSize(new Dimension(70, 24));
@@ -68,7 +68,7 @@ public final class IncreaseAmountDialog extends JDialog {
         contentPane.add(buttonPanel);
 
         /* this */
-        setTitle("Увеличить количество");
+        setTitle("Уменьшить количество");
         setContentPane(contentPane);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setModal(true);
@@ -80,7 +80,7 @@ public final class IncreaseAmountDialog extends JDialog {
         int amount = (int) amountSpinner.getValue();
 
         result = initial;
-        result.setAmount(initial.getAmount() + amount);
+        result.setAmount(initial.getAmount() - amount);
 
         dispose();
     }
