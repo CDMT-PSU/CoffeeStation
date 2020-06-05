@@ -2,20 +2,14 @@ package cdmtpsu.coffee.data;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
 import java.util.Objects;
 
 @DatabaseTable(tableName = RecipeItem.TABLE_NAME)
-public final class RecipeItem implements DataObject {
-    /* names */
+public final class RecipeItem {
     public static final String TABLE_NAME = "recipe_item";
     public static final String MENU_ITEM_FIELD_NAME = "menu_item_id";
     public static final String INGREDIENT_FIELD_NAME = "ingredient_id";
     public static final String AMOUNT_FIELD_NAME = "amount";
-    /* indices */
-    public static final int MENU_ITEM_FIELD_INDEX = 0;
-    public static final int INGREDIENT_FIELD_INDEX = 1;
-    public static final int AMOUNT_FIELD_INDEX = 2;
 
     @DatabaseField(generatedId = true)
     private int id;
@@ -29,6 +23,10 @@ public final class RecipeItem implements DataObject {
     private int amount;
 
     public RecipeItem() {
+    }
+
+    public int getId() {
+        return id;
     }
 
     public MenuItem getMenuItem() {
@@ -53,35 +51,6 @@ public final class RecipeItem implements DataObject {
 
     public void setAmount(int amount) {
         this.amount = amount;
-    }
-
-    @Override
-    public Object getValue(int fieldIndex) {
-        switch (fieldIndex) {
-            case MENU_ITEM_FIELD_INDEX:
-                return menuItem;
-            case INGREDIENT_FIELD_INDEX:
-                return ingredient;
-            case AMOUNT_FIELD_INDEX:
-                return amount;
-            default:
-                return null;
-        }
-    }
-
-    @Override
-    public void setValue(int fieldIndex, Object value) {
-        switch (fieldIndex) {
-            case MENU_ITEM_FIELD_INDEX:
-                menuItem = (MenuItem) value;
-                break;
-            case INGREDIENT_FIELD_INDEX:
-                ingredient = (Ingredient) value;
-                break;
-            case AMOUNT_FIELD_INDEX:
-                amount = (int) value;
-                break;
-        }
     }
 
     @Override

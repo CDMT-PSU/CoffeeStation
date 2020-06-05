@@ -17,19 +17,20 @@
   <component name="ProjectId" id="1cqaQIbZ14NAO5S5mbpWrSsgYCs" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/cdmtpsu/coffee/util" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="cdmtpsu.coffee.ui.tabs" />
-      <recent name="cdmtpsu.coffee.util" />
-      <recent name="cdmtpsu.coffee.data" />
+      <recent name="cdmtpsu.coffee.newui.menuitem" />
+      <recent name="cdmtpsu.coffee.newui.recipeitem" />
+      <recent name="cdmtpsu.coffee.newui.menu" />
+      <recent name="cdmtpsu.coffee.newui.ingredient" />
+      <recent name="cdmtpsu.coffee.newui" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\guarandoo\Documents\GitHub\CoffeeStation\src\main\java\cdmtpsu\coffee\util" />
@@ -57,41 +58,56 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="719" y="330" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1591262126375" />
-    <state x="765" y="229" key="#com.intellij.ide.util.MemberChooser" timestamp="1591273595968">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="765" y="231" key="#com.intellij.ide.util.MemberChooser" timestamp="1591364055922">
+      <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="765" y="229" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1591273595968" />
+    <state x="765" y="231" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1050@0.0.1920.1050" timestamp="1591364055922" />
+    <state x="508" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1591361408457">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="508" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1591361408457" />
+    <state x="690" y="274" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1591358270210">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="690" y="274" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1591358270210" />
     <state x="740" y="278" key="FileChooserDialogImpl" timestamp="1591258742295">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="278" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1591258742295" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1591294007356">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1877" height="285" key="GridCell.Tab.0.bottom" timestamp="1591366494033">
+      <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1591294007356" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1591294007356">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1877" height="285" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1591366494033" />
+    <state width="1877" height="285" key="GridCell.Tab.0.center" timestamp="1591366494033">
+      <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1591294007356" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1591294007356">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1877" height="285" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1591366494033" />
+    <state width="1877" height="285" key="GridCell.Tab.0.left" timestamp="1591366494033">
+      <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1591294007356" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1591294007356">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1877" height="285" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1591366494033" />
+    <state width="1877" height="285" key="GridCell.Tab.0.right" timestamp="1591366494033">
+      <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1591294007356" />
-    <state x="463" y="165" key="SettingsEditor" timestamp="1591274229166">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1877" height="285" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1591366494033" />
+    <state x="463" y="167" key="SettingsEditor" timestamp="1591364504728">
+      <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="463" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1591274229166" />
+    <state x="463" y="167" key="SettingsEditor/0.0.1920.1050@0.0.1920.1050" timestamp="1591364504728" />
     <state x="616" y="240" key="run.anything.popup" timestamp="1591261946275">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1591261946275" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1591279083581">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="623" y="227" width="672" height="685" key="search.everywhere.popup" timestamp="1591358962785">
+      <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1591279083581" />
+    <state x="623" y="227" width="672" height="685" key="search.everywhere.popup/0.0.1920.1050@0.0.1920.1050" timestamp="1591358962785" />
   </component>
 </project>

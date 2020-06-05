@@ -116,7 +116,7 @@ public final class StartupWindow {
             if (user != null && Database.authenticate(user, password)) {
                 /*System.out.println("SUCCESS!!");*/
                 frame.dispose();
-                new MainWindow(user).create();
+                //new MainWindow(user).create();
             } else {
                 JOptionPane.showMessageDialog(this,
                         "Учетная запись с указанными данными не существует",

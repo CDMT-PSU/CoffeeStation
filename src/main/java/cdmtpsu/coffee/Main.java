@@ -1,18 +1,14 @@
 package cdmtpsu.coffee;
 
 import cdmtpsu.coffee.data.Database;
-import cdmtpsu.coffee.data.User;
-import cdmtpsu.coffee.ui.MainWindow;
-import cdmtpsu.coffee.ui.StartupWindow;
+import cdmtpsu.coffee.newui.MainFrame;
 import com.alee.laf.WebLookAndFeel;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import java.awt.Image;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -48,6 +44,11 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        UIManager.put("OptionPane.yesButtonText", "Да");
+        UIManager.put("OptionPane.noButtonText", "Нет");
+        UIManager.put("OptionPane.okButtonText", "ОК");
+        UIManager.put("OptionPane.cancelButtonText", "Отмена");
+
         try {
             //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             JFrame.setDefaultLookAndFeelDecorated(true);
@@ -55,7 +56,7 @@ public class Main {
         } catch (Exception ignored) {
         }
         Database.getInstance(); // init
-        new StartupWindow().create();
+        //new StartupWindow().create();
         /*try {
             User user = Database.getInstance().getUsers().queryBuilder()
                     .where().eq(User.USERNAME_FIELD_NAME, "admin")
@@ -64,5 +65,7 @@ public class Main {
         } catch (SQLException e) {
             e.printStackTrace();
         }*/
+
+        new MainFrame().setVisible(true);
     }
 }
