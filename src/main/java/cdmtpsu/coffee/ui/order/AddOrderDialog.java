@@ -155,6 +155,12 @@ public final class AddOrderDialog extends JDialog {
 
         ArrayList<OrderItem> orderItems = orderItemPanel.getOrderItems();
 
+        /* Не даем создать пустой заказ. */
+        if (orderItems.size() == 0) {
+            showNoOrderItemsMessageDialog();
+            return;
+        }
+
         /* Проверяем есть ли у нас достаточное количество ингредиентов для того чтобы приготовить указанные
          * позиции меню в указанном количестве. */
 
@@ -244,6 +250,12 @@ public final class AddOrderDialog extends JDialog {
 
     public Result getResult() {
         return result;
+    }
+
+    private void showNoOrderItemsMessageDialog() {
+        JOptionPane.showMessageDialog(getOwner(),
+                "Вы не добавили ни одной позиции в заказ", "Внимание",
+                JOptionPane.WARNING_MESSAGE);
     }
 
     private void showNotEnoughIngredientsMessageDialog(ArrayList<Ingredient> ingredients) {
