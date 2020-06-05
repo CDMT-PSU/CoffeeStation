@@ -74,7 +74,6 @@ public final class AddOrderDialog extends JDialog {
         Database.getInstance().getUsers().forEach(userComboBox::addItem);
         userComboBox.setRenderer(new ListCellRenderer());
         userComboBox.setSelectedItem(sessionUser);
-        // todo: set enanbled
 
         /* userPanel */
         userPanel.setLayout(new CenterLayout());
@@ -88,7 +87,6 @@ public final class AddOrderDialog extends JDialog {
         dateTextField.setPreferredSize(new Dimension(200, 24));
         SwingUtils.onValueChanged(dateTextField, this::fieldValueChanged);
         dateTextField.setText(Database.getCurrentDate());
-        // todo: set enabled
 
         /* datePanel */
         datePanel.setLayout(new CenterLayout());

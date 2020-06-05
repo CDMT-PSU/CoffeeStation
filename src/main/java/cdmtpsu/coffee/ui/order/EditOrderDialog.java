@@ -70,7 +70,6 @@ public final class EditOrderDialog extends JDialog {
         Database.getInstance().getUsers().forEach(userComboBox::addItem);
         userComboBox.setRenderer(new ListCellRenderer());
         userComboBox.setSelectedItem(initial.getUser());
-        // todo: set enanbled
 
         /* userPanel */
         userPanel.setLayout(new CenterLayout());
@@ -83,7 +82,6 @@ public final class EditOrderDialog extends JDialog {
         /* dateTextField */
         dateTextField.setPreferredSize(new Dimension(200, 24));
         dateTextField.setText(initial.getDate());
-        // todo: set enabled
 
         /* datePanel */
         datePanel.setLayout(new CenterLayout());
@@ -105,7 +103,7 @@ public final class EditOrderDialog extends JDialog {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        // TODO: ПРОВЕРИТЬ ЕСТЬ ЛИ РЕФРЕШ!!!
+        orderItemPanel.refresh();
 
         /* infoLabel */
         infoLabel.setText("Редактирование существующих заказов влияет на количество ингредиентов.");

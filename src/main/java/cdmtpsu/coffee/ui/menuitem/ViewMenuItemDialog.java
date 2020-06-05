@@ -45,7 +45,7 @@ public final class ViewMenuItemDialog extends JDialog {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        // TODO: ПРОВЕРИТЬ ЕСТЬ ЛИ РЕФРЕШ!!!
+        recipeItemPanel.refresh();
 
         /* contentPane */
         contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

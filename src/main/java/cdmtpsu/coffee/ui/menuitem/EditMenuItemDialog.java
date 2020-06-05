@@ -98,7 +98,7 @@ public final class EditMenuItemDialog extends JDialog {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        // TODO: ПРОВЕРИТЬ ЕСТЬ ЛИ РЕФРЕШ!!!
+        recipeItemPanel.refresh();
 
         /* okButton */
         okButton.setPreferredSize(new Dimension(70, 24));

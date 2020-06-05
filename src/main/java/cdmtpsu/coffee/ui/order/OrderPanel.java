@@ -20,6 +20,7 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public final class OrderPanel extends JPanel implements Refreshable {
     private final Window owner;
@@ -177,8 +178,25 @@ public final class OrderPanel extends JPanel implements Refreshable {
 
     /* Logic */
     public void refresh() {
+        User sessionUser = ((MainFrame) owner).getUser();
+
         orders.clear();
-        dao.forEach(orders::add);
+
+        /* Для обычного пользователя будем грузить заказы лишь на текущую дату, админу - все. */
+        if (sessionUser.getRole() == User.Role.ADMINISTRATOR) {
+            dao.forEach(orders::add);
+        } else {
+
+            try {
+                List<Order> todayOrders = dao.queryBuilder()
+                        .where().eq(Order.DATE_FIELD_NAME, Database.getCurrentDate()).query();
+                orders.addAll(todayOrders);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+
         tableModel.fireTableDataChanged();
     }
 
