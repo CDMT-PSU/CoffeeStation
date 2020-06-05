@@ -1,13 +1,31 @@
-dependencies:
-  override:
-    - mvn -DskipTests clean install dependency:resolve-plugins dependency:go-offline
+version: 2 # use CircleCI 2.0
+jobs: # a collection of steps
+  build: # runs not using Workflows must have a `build` job as entry point
+    
+    working_directory: ~/CoffeStation # directory where steps will run
 
-test:
-  override:
-    - mvn -o surefire:test
+    docker: # run the steps with Docker
+      - image: circleci/openjdk:8-jdk-stretch # ...with this image as the primary container; this is where all `steps` will run
 
-deployment:
-  main:
-    branch: master
-    commands:
-      - mvn -s .circleci.settings.xml -DskipTests deploy
+    steps: # a collection of executable commands
+
+      - checkout # check out source code to working directory
+
+      - restore_cache: # restore the saved cache after the first run or if `pom.xml` has changed
+          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+          key: CoffeStation-{{ checksum "pom.xml" }}
+      
+      - run: mvn dependency:go-offline # gets the project dependencies
+      
+      - save_cache: # saves the project dependencies
+          paths:
+            - ~/.m2
+          key: CoffeStation-{{ checksum "pom.xml" }}
+      
+      - run: mvn package # run the actual tests
+      
+      - store_test_results:
+          path: target/test_reoports
+      
+      - store_artifacts: # store the jar as an artifact
+          path: target/CoffeStation-0.1.jar 
