@@ -32,6 +32,7 @@ public final class OrderPanel extends JPanel implements Refreshable {
     private final JButton addButton;
     private final JButton editButton;
     private final JButton removeButton;
+    private final JButton viewButton;
     private final JToolBar toolBar;
     private final JTable table;
     private final JScrollPane scrollPane;
@@ -50,6 +51,7 @@ public final class OrderPanel extends JPanel implements Refreshable {
         addButton = new JButton();
         editButton = new JButton();
         removeButton = new JButton();
+        viewButton = new JButton();
         toolBar = new JToolBar();
         table = new JTable();
 
@@ -60,20 +62,26 @@ public final class OrderPanel extends JPanel implements Refreshable {
         /* editButton */
         editButton.setText("Редактировать");
         editButton.addActionListener(this::editButtonClicked);
-        /* Только Администратор может редактировать существующие заказы. */
-        editButton.setVisible(sessionUser.getRole() == User.Role.ADMINISTRATOR);
 
         /* removeButton */
         removeButton.setText("Удалить");
         removeButton.addActionListener(this::removeButtonClicked);
-        /* Только Администратор может удалять заказы. */
-        removeButton.setVisible(sessionUser.getRole() == User.Role.ADMINISTRATOR);
+
+        /* viewButton */
+        viewButton.setText("Просмотреть заказ");
+        viewButton.addActionListener(this::viewButtonClicked);
 
         /* toolBar */
         toolBar.setFloatable(false);
         toolBar.add(addButton);
-        toolBar.add(editButton);
-        toolBar.add(removeButton);
+        /* Только Администратор может удалять заказы. */
+        /* Только Администратор может редактировать существующие заказы. */
+        if (sessionUser.getRole() == User.Role.ADMINISTRATOR) {
+            toolBar.add(editButton);
+            toolBar.add(removeButton);
+        }
+        toolBar.addSeparator();
+        toolBar.add(viewButton);
 
         /* table */
         table.setModel(tableModel);
@@ -173,6 +181,15 @@ public final class OrderPanel extends JPanel implements Refreshable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void viewButtonClicked(ActionEvent event) {
+        Order order = getSelectedOrder();
+        if (order == null) {
+            showOrderNotSelectedMessageDialog();
+            return;
+        }
+        new ViewOrderDialog(owner, order).setVisible(true);
     }
     /**/
 
